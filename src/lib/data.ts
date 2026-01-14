@@ -48,6 +48,8 @@ export const users: User[] = [
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
     connections: 753,
     isCurrentUser: false,
+    isOnline: true,
+    lastSeen: 'Active now',
   },
   {
     id: 'user-3',
@@ -56,6 +58,8 @@ export const users: User[] = [
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan',
     connections: 621,
     isCurrentUser: false,
+    isOnline: false,
+    lastSeen: '1h ago',
   },
   {
     id: 'user-4',
@@ -64,6 +68,8 @@ export const users: User[] = [
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Michael',
     connections: 1842,
     isCurrentUser: false,
+    isOnline: false,
+    lastSeen: 'Yesterday',
   },
   {
     id: 'user-5',
@@ -72,6 +78,8 @@ export const users: User[] = [
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Emily',
     connections: 934,
     isCurrentUser: false,
+    isOnline: false,
+    lastSeen: '2d ago',
   },
   {
     id: 'user-6',
@@ -80,6 +88,18 @@ export const users: User[] = [
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=David',
     connections: 2156,
     isCurrentUser: false,
+    isOnline: false,
+    lastSeen: '2h ago',
+  },
+  {
+    id: 'user-7',
+    name: 'Sarah Miller',
+    title: 'Senior Recruiter at TechCorp',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=SarahM',
+    connections: 1240,
+    isCurrentUser: false,
+    isOnline: true,
+    lastSeen: 'Active now',
   },
 ];
 

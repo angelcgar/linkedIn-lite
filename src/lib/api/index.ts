@@ -1,6 +1,6 @@
-import type { User, Post, ConnectionSuggestion, PostWithAuthor } from '@/types/index.js';
+import type { User, Post, ConnectionSuggestion, PostWithAuthor, ConversationWithUser, Message } from '@/types/index.js';
 import { users as usersData, posts as postsData } from '../data.js';
-// import type { User } from '@/types/index.js';
+import { conversations as conversationsData, messages as messagesData } from '../messaging-data.js';
 
 /**
  * Simulated API latency (in milliseconds)
@@ -80,4 +80,109 @@ export async function getUserById(userId: string): Promise<User | null> {
 export async function getPostsByUser(userId: string): Promise<PostWithAuthor[]> {
   const allPosts = await getPosts();
   return allPosts.filter((p) => p.post.userId === userId);
+}
+
+/**
+ * Get all conversations for the current user
+ * In a real app, this would call: GET /api/conversations
+ */
+export async function getConversations(): Promise<ConversationWithUser[]> {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    return [];
+  }
+
+  const enrichedConversations: ConversationWithUser[] = conversationsData.map((conversation) => {
+    // Find the other participant (not the current user)
+    const otherUserId = conversation.participants.find((id) => id !== currentUser.id);
+    const otherUser = usersData.find((u) => u.id === otherUserId);
+
+    if (!otherUser) {
+      throw new Error(`User not found for conversation ${conversation.id}`);
+    }
+
+    // Get last message for this conversation
+    const conversationMessages = messagesData.filter((m) => m.conversationId === conversation.id);
+    const lastMessage = conversationMessages[conversationMessages.length - 1];
+
+    return {
+      conversation: {
+        ...conversation,
+        lastMessage,
+      },
+      otherUser,
+    };
+  });
+
+  return simulateApiCall(enrichedConversations);
+}
+
+/**
+ * Get all messages for a specific conversation
+ * In a real app, this would call: GET /api/conversations/{conversationId}/messages
+ */
+export async function getMessagesByConversationId(conversationId: string): Promise<Message[]> {
+  const conversationMessages = messagesData.filter((m) => m.conversationId === conversationId);
+  return simulateApiCall(conversationMessages);
+}
+
+/**
+ * Get a specific conversation by ID with enriched user data
+ * In a real app, this would call: GET /api/conversations/{conversationId}
+ */
+export async function getConversationById(conversationId: string): Promise<ConversationWithUser | null> {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    return null;
+  }
+
+  const conversation = conversationsData.find((c) => c.id === conversationId);
+  if (!conversation) {
+    return null;
+  }
+
+  // Find the other participant (not the current user)
+  const otherUserId = conversation.participants.find((id) => id !== currentUser.id);
+  const otherUser = usersData.find((u) => u.id === otherUserId);
+
+  if (!otherUser) {
+    return null;
+  }
+
+  // Get last message for this conversation
+  const conversationMessages = messagesData.filter((m) => m.conversationId === conversation.id);
+  const lastMessage = conversationMessages[conversationMessages.length - 1];
+
+  return simulateApiCall({
+    conversation: {
+      ...conversation,
+      lastMessage,
+    },
+    otherUser,
+  });
+}
+
+/**
+ * Send a new message in a conversation
+ * In a real app, this would call: POST /api/conversations/{conversationId}/messages
+ */
+export async function sendMessage(conversationId: string, content: string): Promise<Message> {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    throw new Error('User not authenticated');
+  }
+
+  const newMessage: Message = {
+    id: `msg-${Date.now()}`,
+    conversationId,
+    senderId: currentUser.id,
+    content,
+    timestamp: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+    isRead: true,
+  };
+
+  // In a real app, this would persist to the backend
+  messagesData.push(newMessage);
+
+  return simulateApiCall(newMessage);
 }

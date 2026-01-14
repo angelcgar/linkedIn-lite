@@ -1,0 +1,57 @@
+---
+import type { ConversationWithUser } from "../types/index.js";
+
+interface Props {
+    conversation: ConversationWithUser;
+}
+
+const { conversation } = Astro.props;
+const { otherUser, conversation: conv } = conversation;
+const lastMessage = conv.lastMessage;
+---
+
+<a
+    href={`/messages/${conv.id}`}
+    class="flex items-start gap-3 p-4 hover:bg-gray-50 transition border-b border-gray-100"
+>
+    <!-- Avatar with online indicator -->
+    <div class="relative flex-shrink-0">
+        <img
+            src={otherUser.avatar}
+            alt={otherUser.name}
+            class="w-14 h-14 rounded-full"
+        />
+        {
+            otherUser.isOnline && (
+                <span class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
+            )
+        }
+    </div>
+
+    <!-- Content -->
+    <div class="flex-1 min-w-0">
+        <div class="flex items-baseline justify-between mb-1">
+            <h3 class="font-semibold text-gray-900 truncate">
+                {otherUser.name}
+            </h3>
+            <span class="text-xs text-gray-500 ml-2 flex-shrink-0"
+                >{conv.updatedAt}</span
+            >
+        </div>
+
+        {
+            lastMessage && (
+                <p class="text-sm text-gray-600 truncate">
+                    {lastMessage.content}
+                </p>
+            )
+        }
+    </div>
+
+    <!-- Unread indicator -->
+    {
+        conv.unreadCount > 0 && (
+            <span class="flex-shrink-0 w-3 h-3 bg-blue-600 rounded-full mt-2" />
+        )
+    }
+</a>

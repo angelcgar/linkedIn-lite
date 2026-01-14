@@ -49,6 +49,10 @@
 
 ✅ Perfil de usuario (con About, Experience, Skills)
 
+✅ Mensajería - Lista de conversaciones
+
+✅ Mensajería - Vista de chat
+
  Login / Continue as Guest (fake)
 
  Configuración básica

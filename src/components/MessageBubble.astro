@@ -1,0 +1,55 @@
+---
+import type { Message, User } from "../types/index.js";
+
+interface Props {
+    message: Message;
+    isCurrentUser: boolean;
+    sender?: User;
+}
+
+const { message, isCurrentUser, sender } = Astro.props;
+---
+
+<div
+    class={`flex gap-2 mb-4 ${isCurrentUser ? "justify-end" : "justify-start"}`}
+>
+    {
+        !isCurrentUser && sender && (
+            <img
+                src={sender.avatar}
+                alt={sender.name}
+                class="w-8 h-8 rounded-full flex-shrink-0"
+            />
+        )
+    }
+
+    <div
+        class={`flex flex-col ${isCurrentUser ? "items-end" : "items-start"} max-w-[70%]`}
+    >
+        <div
+            class={`px-4 py-3 rounded-2xl ${
+                isCurrentUser
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-900"
+            }`}
+        >
+            <p class="text-sm leading-relaxed whitespace-pre-wrap">
+                {message.content}
+            </p>
+        </div>
+        <span class="text-xs text-gray-500 mt-1 px-2">
+            {message.timestamp}
+            {
+                isCurrentUser && message.isRead && (
+                    <svg
+                        class="inline w-4 h-4 ml-1 text-blue-600"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                    </svg>
+                )
+            }
+        </span>
+    </div>
+</div>

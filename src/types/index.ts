@@ -14,6 +14,8 @@ export interface User {
   about?: string;
   experience?: Experience[];
   skills?: string[];
+  isOnline?: boolean;
+  lastSeen?: string;
 }
 
 export interface Experience {
@@ -62,4 +64,27 @@ export interface PaginatedResponse<T> {
   total: number;
   page: number;
   pageSize: number;
+}
+
+// Messaging types
+export interface Message {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  content: string;
+  timestamp: string;
+  isRead: boolean;
+}
+
+export interface Conversation {
+  id: string;
+  participants: string[]; // User IDs
+  lastMessage?: Message;
+  unreadCount: number;
+  updatedAt: string;
+}
+
+export interface ConversationWithUser {
+  conversation: Conversation;
+  otherUser: User;
 }
