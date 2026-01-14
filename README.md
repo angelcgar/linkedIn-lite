@@ -1,12 +1,53 @@
-# Astro Starter Kit: Basics
+# LinkedIn-lite
+
+A modern LinkedIn clone built with **Astro** and **Tailwind CSS** as a portfolio demo project.
+
+## ✨ Features
+
+- 🎨 **Clean UI** - Professional LinkedIn-inspired design
+- 📱 **Responsive** - Mobile-first approach
+- ⚡ **Fast** - Built with Astro for optimal performance
+- 🎯 **Type-Safe** - Full TypeScript support
+- 🏗️ **Scalable Architecture** - Ready for backend integration
+
+## 🎯 Pages
+
+- **Home Feed** (`/`) - Posts feed with likes and interactions
+- **Profile** (`/profile`) - User profile with experience, skills, and about section
+
+## 🚀 Quick Start
 
 ```sh
-pnpm create astro@latest -- --template basics
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Preview production build
+pnpm preview
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🏗️ Architecture
 
-## 🚀 Project Structure
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for detailed information about:
+- API abstraction layer
+- TypeScript types
+- Data flow
+- Backend integration guide
+
+## 🎨 Design System
+
+Custom CSS variables defined in `src/styles/global.css`:
+- LinkedIn brand colors
+- Neutral palette
+- Semantic colors
+- Consistent spacing
+
+## 📁 Project Structure
 
 Inside of your Astro project, you'll see the following folders and files:
 
@@ -30,17 +71,23 @@ To learn more about the folder structure of an Astro project, refer to [our guid
 
 ## 🧞 Commands
 
-All commands are run from the root of the project, from a terminal:
+## 🧞 Commands
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+| Command        | Action                                |
+| :------------- | :------------------------------------ |
+| `pnpm install` | Installs dependencies                 |
+| `pnpm dev`     | Starts dev server at `localhost:4321` |
+| `pnpm build`   | Build production site to `./dist/`    |
+| `pnpm preview` | Preview production build locally      |
 
-## 👀 Want to learn more?
+## 🎯 Next Steps
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- [ ] Add more pages (Network, Jobs, Messages)
+- [ ] Implement comment system
+- [ ] Add search functionality
+- [ ] Connect to real backend API
+- [ ] Add authentication
+
+## 📝 License
+
+MIT - This is a demo project for portfolio purposes.

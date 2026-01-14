@@ -10,6 +10,22 @@ export interface User {
   avatar: string;
   connections: number;
   isCurrentUser?: boolean;
+  location?: string;
+  about?: string;
+  experience?: Experience[];
+  skills?: string[];
+}
+
+export interface Experience {
+  id: string;
+  title: string;
+  company: string;
+  employmentType: string;
+  startDate: string;
+  endDate?: string;
+  duration: string;
+  location?: string;
+  logo?: string;
 }
 
 export interface Post {

@@ -47,13 +47,13 @@
 
 👤 Fase 5 · Pantallas clave
 
- Perfil de usuario
+✅ Perfil de usuario (con About, Experience, Skills)
 
  Login / Continue as Guest (fake)
 
  Configuración básica
 
- Pantalla “About / Help”
+ Pantalla "About / Help"
 
 🧼 Fase 6 · Pulido
 

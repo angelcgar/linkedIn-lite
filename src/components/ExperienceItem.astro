@@ -1,0 +1,33 @@
+---
+import type { Experience } from "../types/index.js";
+
+interface Props {
+    experience: Experience;
+}
+
+const { experience } = Astro.props;
+---
+
+<div class="flex gap-3 py-4">
+    <img
+        src={experience.logo}
+        alt={experience.company}
+        class="w-12 h-12 rounded"
+    />
+    <div class="flex-1">
+        <h3 class="font-semibold text-gray-900">{experience.title}</h3>
+        <p class="text-sm text-gray-900">
+            {experience.company} • {experience.employmentType}
+        </p>
+        <p class="text-sm text-gray-600 mt-1">
+            {experience.startDate} - {experience.endDate || "Present"} • {
+                experience.duration
+            }
+        </p>
+        {
+            experience.location && (
+                <p class="text-sm text-gray-600">{experience.location}</p>
+            )
+        }
+    </div>
+</div>
