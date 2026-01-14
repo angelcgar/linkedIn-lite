@@ -1,39 +1,45 @@
 ✅ TODO LIST — LinkedIn-lite (demo de portfolio)
 🧱 Fase 1 · Base
 
- Inicializar proyecto con Astro
+✅ Inicializar proyecto con Astro
 
- Definir estructura de carpetas (components, layouts, data)
+✅ Definir estructura de carpetas (components, layouts, data)
 
- Configurar estilos globales (tipografía, colores, spacing)
+✅ Configurar estilos globales (tipografía, colores, spacing)
 
 🧩 Fase 2 · Datos dummy
 
- Crear users.json
+✅ Crear users.json
 
- Crear posts.json
+✅ Crear posts.json
 
- Definir currentUser (usuario activo fake)
+✅ Definir currentUser (usuario activo fake)
 
- Relacionar posts con usuarios
+✅ Relacionar posts con usuarios
+
+✅ **NUEVO:** Migrar a TypeScript (src/lib/data.ts con tipos completos)
+
+✅ **NUEVO:** Crear capa de API simulada (src/lib/api/)
+
+✅ **NUEVO:** Definir tipos TypeScript (src/types/)
 
 🖥️ Fase 3 · UI principal
 
- Navbar (logo, search, icons)
+✅ Navbar (logo, search, icons)
 
- Sidebar izquierda (perfil actual)
+✅ Sidebar izquierda (perfil actual)
 
- Feed de posts
+✅ Feed de posts
 
- Sidebar derecha (people you may know)
+✅ Sidebar derecha (people you may know)
 
- Componente Post reutilizable
+✅ Componente Post reutilizable
 
 ⚡ Fase 4 · Interacciones simuladas
 
- Like / Unlike (estado local)
+✅ Like / Unlike (estado local)
 
- Connect → Pending
+✅ Connect → Pending
 
  Expandir comentarios
 
