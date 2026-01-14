@@ -1,11 +1,73 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import ProfileSidebar from '../components/ProfileSidebar.astro';
+import RightSidebar from '../components/RightSidebar.astro';
+import Post from '../components/Post.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import usersData from '../data/users.json';
+import postsData from '../data/posts.json';
+
+const currentUser = usersData.find(u => u.isCurrentUser);
+const suggestions = usersData.filter(u => !u.isCurrentUser).slice(0, 3);
+
+// Enrich posts with author data
+const enrichedPosts = postsData.map(post => ({
+  post,
+  author: usersData.find(u => u.id === post.userId)!
+}));
 ---
 
 <Layout>
-	<Welcome />
+	<Navbar />
+
+	<main class="max-w-7xl mx-auto px-4 py-6">
+		<div class="grid grid-cols-12 gap-6">
+			<!-- Left Sidebar -->
+			<div class="col-span-3">
+				<ProfileSidebar user={currentUser} />
+			</div>
+
+			<!-- Main Feed -->
+			<div class="col-span-6">
+				<!-- Create Post Box -->
+				<div class="bg-white rounded-lg border border-gray-200 p-4 mb-4">
+					<div class="flex items-center gap-3">
+						<img
+							src={currentUser.avatar}
+							alt={currentUser.name}
+							class="w-12 h-12 rounded-full"
+						/>
+						<button class="flex-1 text-left px-4 py-3 border border-gray-300 rounded-full text-gray-600 hover:bg-gray-50 transition">
+							Start a post
+						</button>
+					</div>
+					<div class="flex items-center justify-around mt-3 pt-3 border-t border-gray-200">
+						<button class="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded transition">
+							<svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+								<path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+							</svg>
+							<span class="text-sm font-semibold">Photo</span>
+						</button>
+						<button class="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded transition">
+							<svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+								<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+							</svg>
+							<span class="text-sm font-semibold">Article</span>
+						</button>
+					</div>
+				</div>
+
+				<!-- Posts Feed -->
+				{enrichedPosts.map(({ post, author }) => (
+					<Post post={post} author={author} />
+				))}
+			</div>
+
+			<!-- Right Sidebar -->
+			<div class="col-span-3">
+				<RightSidebar suggestions={suggestions} />
+			</div>
+		</div>
+	</main>
 </Layout>

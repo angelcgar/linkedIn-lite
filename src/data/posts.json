@@ -1,0 +1,38 @@
+[
+  {
+    "id": "post-1",
+    "userId": "user-2",
+    "content": "Excited to share my latest project on minimalist interfaces. We focused on reducing cognitive load while maintaining functionality. What's your take on minimal UI? 🚀",
+    "timestamp": "2h",
+    "likes": 124,
+    "comments": 18,
+    "image": "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=600&h=400&fit=crop"
+  },
+  {
+    "id": "post-2",
+    "userId": "user-4",
+    "content": "Always proud of the team at TechFlow. We just hit a major milestone in our backend scalability project! Grateful for everyone's hard work.",
+    "timestamp": "5h",
+    "likes": 89,
+    "comments": 4,
+    "image": null
+  },
+  {
+    "id": "post-3",
+    "userId": "user-5",
+    "content": "Just published a new article about React Server Components and their impact on modern web architecture. Link in comments! 📝",
+    "timestamp": "1d",
+    "likes": 267,
+    "comments": 32,
+    "image": null
+  },
+  {
+    "id": "post-4",
+    "userId": "user-6",
+    "content": "Hiring! We're looking for a Senior Product Designer to join our team. Remote-friendly, competitive salary, and amazing benefits. DM me if interested! 💼",
+    "timestamp": "2d",
+    "likes": 421,
+    "comments": 56,
+    "image": null
+  }
+]

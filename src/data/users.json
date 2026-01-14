@@ -1,0 +1,50 @@
+[
+  {
+    "id": "user-1",
+    "name": "Alex Johnson",
+    "title": "Product Designer at TechCorp",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
+    "connections": 482,
+    "isCurrentUser": true
+  },
+  {
+    "id": "user-2",
+    "name": "Sarah Miller",
+    "title": "UX Manager at Designly",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+    "connections": 753,
+    "isCurrentUser": false
+  },
+  {
+    "id": "user-3",
+    "name": "Jordan Lee",
+    "title": "Lead Dev at Webflow",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan",
+    "connections": 621,
+    "isCurrentUser": false
+  },
+  {
+    "id": "user-4",
+    "name": "Michael Chen",
+    "title": "CTO at TechFlow",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
+    "connections": 1842,
+    "isCurrentUser": false
+  },
+  {
+    "id": "user-5",
+    "name": "Emily Roberts",
+    "title": "Frontend Engineer at Stripe",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Emily",
+    "connections": 934,
+    "isCurrentUser": false
+  },
+  {
+    "id": "user-6",
+    "name": "David Kim",
+    "title": "Product Manager at Google",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
+    "connections": 2156,
+    "isCurrentUser": false
+  }
+]

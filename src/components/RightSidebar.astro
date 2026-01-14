@@ -1,0 +1,79 @@
+---
+interface Props {
+  suggestions: Array<{
+    id: string;
+    name: string;
+    title: string;
+    avatar: string;
+  }>;
+}
+
+const { suggestions } = Astro.props;
+---
+
+<aside class="space-y-4">
+  <!-- People You May Know -->
+  <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div class="p-4 border-b border-gray-200">
+      <h2 class="font-semibold text-gray-900">People you may know</h2>
+    </div>
+
+    <div class="divide-y divide-gray-200">
+      {suggestions.map((person) => (
+        <div class="p-4 hover:bg-gray-50 transition">
+          <div class="flex items-start gap-3">
+            <img
+              src={person.avatar}
+              alt={person.name}
+              class="w-12 h-12 rounded-full"
+            />
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-sm text-gray-900 truncate">{person.name}</h3>
+              <p class="text-xs text-gray-600 mt-1 line-clamp-2">{person.title}</p>
+              <button
+                class="connect-btn mt-3 w-full px-4 py-1.5 border border-blue-600 text-blue-600 rounded-full text-sm font-semibold hover:bg-blue-50 transition"
+                data-user-id={person.id}
+              >
+                Connect
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Footer Links -->
+  <div class="bg-white rounded-lg border border-gray-200 p-4">
+    <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-600">
+      <a href="/about" class="hover:text-blue-600">About</a>
+      <a href="/help" class="hover:text-blue-600">Help Center</a>
+      <a href="/privacy" class="hover:text-blue-600">Privacy</a>
+      <a href="/terms" class="hover:text-blue-600">Terms</a>
+      <a href="/ads" class="hover:text-blue-600">Advertising</a>
+      <a href="/settings" class="hover:text-blue-600">Settings</a>
+    </div>
+    <p class="text-xs text-gray-500 mt-3">LinkedIn Lite © 2026</p>
+  </div>
+</aside>
+
+<script>
+  // Client-side interactivity for Connect buttons
+  document.addEventListener('DOMContentLoaded', () => {
+    const connectButtons = document.querySelectorAll('.connect-btn');
+
+    connectButtons.forEach(button => {
+      const btn = button as HTMLButtonElement;
+
+      btn.addEventListener('click', () => {
+        // Toggle between Connect and Pending
+        if (btn.textContent?.trim() === 'Connect') {
+          btn.textContent = 'Pending';
+          btn.classList.remove('border-blue-600', 'text-blue-600', 'hover:bg-blue-50');
+          btn.classList.add('border-gray-400', 'text-gray-600', 'cursor-not-allowed');
+          btn.disabled = true;
+        }
+      });
+    });
+  });
+</script>
