@@ -1,0 +1,425 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+
+export const prerender = false;
+
+const jobId = Astro.params.id;
+
+// Datos simulados del job
+const jobTitle = "Senior Frontend Developer";
+const companyName = "TechStream Solutions";
+const location = "Singapore (Remote)";
+---
+
+<Layout>
+    <div class="min-h-screen bg-gray-50">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+            <div
+                class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between"
+            >
+                <a
+                    href={`/jobs/${jobId}`}
+                    class="p-2 hover:bg-gray-100 rounded-full transition"
+                >
+                    <svg
+                        class="w-6 h-6 text-gray-700"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+                        ></path>
+                    </svg>
+                </a>
+
+                <h1 class="text-lg font-semibold text-gray-900">Easy Apply</h1>
+
+                <div class="w-10"></div>
+            </div>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="bg-white border-b border-gray-200">
+            <div class="max-w-3xl mx-auto px-4">
+                <div
+                    class="h-1 bg-blue-600 transition-all duration-300"
+                    style="width: 50%"
+                >
+                </div>
+            </div>
+        </div>
+
+        <main class="max-w-3xl mx-auto px-4 py-6">
+            <!-- Job Info Card -->
+            <div class="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+                <div class="flex gap-4">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shrink-0"
+                    >
+                        <span class="text-white text-xl font-bold">TS</span>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900 mb-1">
+                            {jobTitle}
+                        </h2>
+                        <p class="text-gray-700 mb-1">
+                            {companyName} • {location}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Application Form -->
+            <form id="easy-apply-form" class="space-y-6">
+                <!-- Contact Info Section -->
+                <section class="bg-white rounded-lg border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-gray-900">
+                            Contact info
+                        </h3>
+                        <button
+                            type="button"
+                            class="text-blue-600 text-sm font-semibold hover:underline"
+                        >
+                            Edit
+                        </button>
+                    </div>
+
+                    <div class="flex gap-4 mb-6">
+                        <div
+                            class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center shrink-0"
+                        >
+                            <span class="text-amber-700 text-xl font-bold"
+                                >AS</span
+                            >
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-900">
+                                Alex Sterling
+                            </h4>
+                            <p class="text-sm text-gray-600">
+                                alex.sterling@example.com
+                            </p>
+                            <p class="text-sm text-gray-600">+65 9123 4567</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Resume Section -->
+                <section class="bg-white rounded-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Resume</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Be sure to include an updated resume. PDF and DOCX are
+                        supported (max 5MB).
+                    </p>
+
+                    <!-- File Upload Area -->
+                    <div
+                        id="resume-upload-area"
+                        class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 hover:bg-blue-50 transition cursor-pointer"
+                    >
+                        <input
+                            type="file"
+                            id="resume-input"
+                            accept=".pdf,.doc,.docx"
+                            class="hidden"
+                        />
+                        <svg
+                            class="w-12 h-12 text-gray-400 mx-auto mb-3"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                            ></path>
+                        </svg>
+                        <p class="text-blue-600 font-semibold mb-1">
+                            Upload resume
+                        </p>
+                        <p class="text-sm text-gray-500">
+                            Click to browse or drag and drop your file
+                        </p>
+                    </div>
+
+                    <!-- Selected File Display (hidden by default) -->
+                    <div
+                        id="selected-file"
+                        class="hidden mt-4 p-4 border-2 border-blue-500 bg-blue-50 rounded-lg"
+                    >
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-12 h-12 bg-red-100 rounded flex items-center justify-center"
+                                >
+                                    <svg
+                                        class="w-6 h-6 text-red-600"
+                                        fill="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"
+                                        ></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p
+                                        id="file-name"
+                                        class="font-semibold text-gray-900"
+                                    >
+                                    </p>
+                                    <p
+                                        id="file-date"
+                                        class="text-sm text-gray-600"
+                                    >
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center"
+                            >
+                                <svg
+                                    class="w-4 h-4 text-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alternative: Show previously uploaded resume -->
+                    <div
+                        id="existing-resume"
+                        class="mt-4 p-4 border border-gray-300 rounded-lg"
+                    >
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-12 h-12 bg-red-100 rounded flex items-center justify-center"
+                                >
+                                    <svg
+                                        class="w-6 h-6 text-red-600"
+                                        fill="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"
+                                        ></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-900">
+                                        Alex_Sterling_CV_2024.pdf
+                                    </p>
+                                    <p class="text-sm text-gray-600">
+                                        Uploaded on Oct 12, 2024
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center"
+                            >
+                                <svg
+                                    class="w-4 h-4 text-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        type="button"
+                        id="upload-new-btn"
+                        class="mt-4 w-full text-blue-600 font-semibold py-3 border-2 border-dashed border-blue-600 rounded-lg hover:bg-blue-50 transition"
+                    >
+                        <svg
+                            class="w-5 h-5 inline mr-2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                            ></path>
+                        </svg>
+                        Upload resume
+                    </button>
+                </section>
+
+                <!-- Additional Question -->
+                <section class="bg-white rounded-lg border border-gray-200 p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">
+                        Years of experience with Tailwind CSS?
+                    </h3>
+                    <input
+                        type="text"
+                        placeholder="e.g. 3"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                </section>
+
+                <!-- Footer Buttons -->
+                <div class="flex gap-3 pt-4">
+                    <button
+                        type="button"
+                        class="flex-1 border-2 border-gray-900 text-gray-900 font-semibold py-4 rounded-lg hover:bg-gray-50 transition"
+                    >
+                        Review
+                    </button>
+                    <button
+                        type="submit"
+                        id="submit-btn"
+                        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-lg transition"
+                    >
+                        Next
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+</Layout>
+
+<script>
+    // Referencias del DOM
+    const uploadArea = document.getElementById("resume-upload-area");
+    const resumeInput = document.getElementById(
+        "resume-input",
+    ) as HTMLInputElement;
+    const selectedFileDiv = document.getElementById("selected-file");
+    const existingResumeDiv = document.getElementById("existing-resume");
+    const uploadNewBtn = document.getElementById("upload-new-btn");
+    const fileNameSpan = document.getElementById("file-name");
+    const fileDateSpan = document.getElementById("file-date");
+    const submitBtn = document.getElementById("submit-btn");
+    const easyApplyForm = document.getElementById("easy-apply-form");
+
+    // Hacer click en el área de upload
+    uploadArea?.addEventListener("click", () => {
+        resumeInput?.click();
+    });
+
+    uploadNewBtn?.addEventListener("click", () => {
+        resumeInput?.click();
+    });
+
+    // Manejar selección de archivo
+    resumeInput?.addEventListener("change", (e) => {
+        const target = e.target as HTMLInputElement;
+        const file = target.files?.[0];
+
+        if (file) {
+            // Validar tipo y tamaño (simulado)
+            const validTypes = [
+                "application/pdf",
+                "application/msword",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            ];
+            const maxSize = 5 * 1024 * 1024; // 5MB
+
+            if (!validTypes.includes(file.type)) {
+                alert("Please upload a PDF or DOCX file");
+                return;
+            }
+
+            if (file.size > maxSize) {
+                alert("File size must be less than 5MB");
+                return;
+            }
+
+            // Mostrar archivo seleccionado
+            if (fileNameSpan) fileNameSpan.textContent = file.name;
+            if (fileDateSpan) {
+                const now = new Date();
+                fileDateSpan.textContent = `Uploaded on ${now.toLocaleDateString(
+                    "en-US",
+                    {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                    },
+                )}`;
+            }
+
+            // Actualizar UI
+            uploadArea?.classList.add("hidden");
+            existingResumeDiv?.classList.add("hidden");
+            uploadNewBtn?.classList.add("hidden");
+            selectedFileDiv?.classList.remove("hidden");
+        }
+    });
+
+    // Drag and drop (simulado - solo visual)
+    uploadArea?.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        uploadArea.classList.add("border-blue-500", "bg-blue-50");
+    });
+
+    uploadArea?.addEventListener("dragleave", () => {
+        uploadArea?.classList.remove("border-blue-500", "bg-blue-50");
+    });
+
+    uploadArea?.addEventListener("drop", (e) => {
+        e.preventDefault();
+        uploadArea?.classList.remove("border-blue-500", "bg-blue-50");
+
+        // Simular selección de archivo
+        const file = e.dataTransfer?.files[0];
+        if (file) {
+            // Crear un nuevo FileList (simulado)
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            if (resumeInput) {
+                resumeInput.files = dataTransfer.files;
+                resumeInput.dispatchEvent(new Event("change"));
+            }
+        }
+    });
+
+    // Manejar envío del formulario
+    easyApplyForm?.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        // Simular envío
+        submitBtn!.textContent = "Submitting...";
+        submitBtn!.disabled = true;
+
+        setTimeout(() => {
+            // Mostrar mensaje de éxito y redirigir
+            alert(
+                "Application submitted successfully! 🎉\n\nThis is a demo - no real application was sent.",
+            );
+            window.location.href = "/jobs";
+        }, 1500);
+    });
+</script>
+
+<style>
+    /* Animación suave para transiciones */
+    #resume-upload-area,
+    #selected-file,
+    #existing-resume {
+        transition: all 0.3s ease;
+    }
+</style>

@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar.astro";
 import ProfileSidebar from "../components/ProfileSidebar.astro";
 import RightSidebar from "../components/RightSidebar.astro";
 import Post from "../components/Post.astro";
+import CreatePostModal from "../components/CreatePostModal.astro";
 
 import {
 	getCurrentUser,
@@ -45,6 +46,8 @@ if (!currentUser) {
 							class="w-12 h-12 rounded-full"
 						/>
 						<button
+							id="open-create-post-modal"
+							data-user={JSON.stringify(currentUser)}
 							class="flex-1 text-left px-4 py-3 border border-gray-300 rounded-full text-gray-600 hover:bg-gray-50 transition"
 						>
 							Start a post
@@ -54,6 +57,7 @@ if (!currentUser) {
 						class="flex items-center justify-around mt-3 pt-3 border-t border-gray-200"
 					>
 						<button
+							id="open-create-post-modal-photo"
 							class="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded transition"
 						>
 							<svg
@@ -68,6 +72,7 @@ if (!currentUser) {
 							<span class="text-sm font-semibold">Photo</span>
 						</button>
 						<button
+							id="open-create-post-modal-article"
 							class="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded transition"
 						>
 							<svg
@@ -85,11 +90,13 @@ if (!currentUser) {
 				</div>
 
 				<!-- Posts Feed -->
-				{
-					enrichedPosts.map(({ post, author }) => (
-						<Post post={post} author={author} />
-					))
-				}
+				<div class="posts-feed">
+					{
+						enrichedPosts.map(({ post, author }) => (
+							<Post post={post} author={author} />
+						))
+					}
+				</div>
 			</div>
 
 			<!-- Right Sidebar -->
@@ -98,4 +105,24 @@ if (!currentUser) {
 			</div>
 		</div>
 	</main>
+
+	<!-- Create Post Modal -->
+	<CreatePostModal currentUser={currentUser} />
 </Layout>
+
+<script>
+	// Abrir modal desde los botones Photo y Article también
+	const photoBtn = document.getElementById("open-create-post-modal-photo");
+	const articleBtn = document.getElementById(
+		"open-create-post-modal-article",
+	);
+	const openModalBtn = document.getElementById("open-create-post-modal");
+
+	photoBtn?.addEventListener("click", () => {
+		openModalBtn?.click();
+	});
+
+	articleBtn?.addEventListener("click", () => {
+		openModalBtn?.click();
+	});
+</script>

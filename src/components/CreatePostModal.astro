@@ -1,0 +1,393 @@
+---
+import type { User } from "../types/index.js";
+
+interface Props {
+    currentUser: User;
+}
+
+const { currentUser } = Astro.props;
+---
+
+<!-- Modal Backdrop -->
+<div
+    id="create-post-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4"
+>
+    <!-- Modal Content -->
+    <div
+        class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+        onclick="event.stopPropagation()"
+    >
+        <!-- Modal Header -->
+        <div
+            class="flex items-center justify-between p-4 border-b border-gray-200"
+        >
+            <h2 class="text-xl font-semibold text-gray-900">Create a post</h2>
+            <button
+                id="close-modal-btn"
+                class="p-2 hover:bg-gray-100 rounded-full transition"
+                aria-label="Close modal"
+            >
+                <svg
+                    class="w-6 h-6 text-gray-600"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                    ></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- User Info -->
+        <div class="p-4">
+            <div class="flex items-center gap-3 mb-4">
+                <img
+                    src={currentUser.avatar}
+                    alt={currentUser.name}
+                    class="w-12 h-12 rounded-full"
+                />
+                <div>
+                    <h3 class="font-semibold text-gray-900">
+                        {currentUser.name}
+                    </h3>
+                    <button
+                        class="flex items-center gap-1 px-3 py-1 border border-gray-300 rounded-full text-sm text-gray-700 hover:bg-gray-50 transition mt-1"
+                    >
+                        <svg
+                            class="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"
+                            ></path>
+                        </svg>
+                        <span>Anyone</span>
+                        <svg
+                            class="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path d="M7 10l5 5 5-5z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Post Content Textarea -->
+            <form id="create-post-form">
+                <textarea
+                    id="post-content"
+                    class="w-full min-h-[200px] p-3 text-gray-900 placeholder-gray-500 resize-none border-0 focus:outline-none focus:ring-0"
+                    placeholder="What do you want to talk about?"
+                    maxlength="3000"></textarea>
+
+                <!-- Action Buttons Row -->
+                <div
+                    class="flex items-center justify-between py-3 border-t border-gray-200"
+                >
+                    <div class="flex items-center gap-2">
+                        <button
+                            type="button"
+                            class="p-2 hover:bg-gray-100 rounded transition"
+                            title="Add photo"
+                        >
+                            <svg
+                                class="w-6 h-6 text-gray-600"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"
+                                ></path>
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            class="p-2 hover:bg-gray-100 rounded transition"
+                            title="Add video"
+                        >
+                            <svg
+                                class="w-6 h-6 text-gray-600"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"
+                                ></path>
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            class="p-2 hover:bg-gray-100 rounded transition"
+                            title="Add event"
+                        >
+                            <svg
+                                class="w-6 h-6 text-gray-600"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"
+                                ></path>
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            class="p-2 hover:bg-gray-100 rounded transition"
+                            title="Add document"
+                        >
+                            <svg
+                                class="w-6 h-6 text-gray-600"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"
+                                ></path>
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            class="p-2 hover:bg-gray-100 rounded transition"
+                            title="More"
+                        >
+                            <svg
+                                class="w-6 h-6 text-gray-600"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <button
+                            type="button"
+                            class="p-2 hover:bg-gray-100 rounded-full transition"
+                            title="Schedule post"
+                        >
+                            <svg
+                                class="w-6 h-6 text-gray-600"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"
+                                ></path>
+                            </svg>
+                        </button>
+                        <button
+                            type="submit"
+                            id="post-submit-btn"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-full transition disabled:bg-gray-300 disabled:cursor-not-allowed"
+                            disabled
+                        >
+                            Post
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Referencias del DOM
+    const modal = document.getElementById("create-post-modal");
+    const openModalBtn = document.getElementById("open-create-post-modal");
+    const closeModalBtn = document.getElementById("close-modal-btn");
+    const postContent = document.getElementById(
+        "post-content",
+    ) as HTMLTextAreaElement;
+    const postSubmitBtn = document.getElementById(
+        "post-submit-btn",
+    ) as HTMLButtonElement;
+    const postForm = document.getElementById(
+        "create-post-form",
+    ) as HTMLFormElement;
+
+    // Abrir modal
+    openModalBtn?.addEventListener("click", () => {
+        modal?.classList.remove("hidden");
+        modal?.classList.add("flex");
+        postContent?.focus();
+    });
+
+    // Cerrar modal
+    const closeModal = () => {
+        modal?.classList.add("hidden");
+        modal?.classList.remove("flex");
+        postContent.value = "";
+        postSubmitBtn.disabled = true;
+    };
+
+    closeModalBtn?.addEventListener("click", closeModal);
+    modal?.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    // Habilitar/deshabilitar botón según contenido
+    postContent?.addEventListener("input", () => {
+        const hasContent = postContent.value.trim().length > 0;
+        postSubmitBtn.disabled = !hasContent;
+    });
+
+    // Manejar envío del formulario
+    postForm?.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const content = postContent.value.trim();
+        if (!content) return;
+
+        // Crear nuevo post (simulado localmente)
+        const newPost = {
+            id: `post-${Date.now()}`,
+            userId: "current-user",
+            content: content,
+            timestamp: "Just now",
+            likes: 0,
+            comments: 0,
+            image: null,
+        };
+
+        // Datos del usuario actual (del atributo data del botón)
+        const currentUserData = openModalBtn?.getAttribute("data-user");
+        const currentUser = currentUserData
+            ? JSON.parse(currentUserData)
+            : null;
+
+        if (currentUser) {
+            // Crear elemento HTML del nuevo post
+            const postHTML = createPostElement(newPost, currentUser);
+
+            // Insertar al inicio del feed
+            const postsContainer = document.querySelector(".posts-feed");
+            if (postsContainer) {
+                postsContainer.insertAdjacentHTML("afterbegin", postHTML);
+
+                // Re-aplicar event listeners para like en el nuevo post
+                attachLikeHandlers();
+            }
+        }
+
+        // Cerrar modal y resetear
+        closeModal();
+    });
+
+    // Función para crear HTML del post
+    function createPostElement(post: any, author: any): string {
+        return `
+			<article class="bg-white rounded-lg border border-gray-200 mb-4 animate-fade-in">
+				<div class="p-4 flex items-start justify-between">
+					<div class="flex items-start gap-3">
+						<img
+							src="${author.avatar}"
+							alt="${author.name}"
+							class="w-12 h-12 rounded-full"
+						/>
+						<div>
+							<h3 class="font-semibold text-gray-900">${author.name}</h3>
+							<p class="text-xs text-gray-600">${author.title}</p>
+							<p class="text-xs text-gray-500 mt-0.5">${post.timestamp}</p>
+						</div>
+					</div>
+					<button class="text-gray-600 hover:bg-gray-100 rounded-full p-2 transition">
+						<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+							<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+						</svg>
+					</button>
+				</div>
+
+				<div class="px-4 pb-3">
+					<p class="text-gray-900 text-sm leading-relaxed">${post.content}</p>
+				</div>
+
+				<div class="px-4 py-2 flex items-center justify-between text-xs text-gray-600 border-t border-gray-200">
+					<button class="hover:underline">
+						${post.likes} Likes
+					</button>
+					<button class="hover:underline">
+						${post.comments} Comments
+					</button>
+				</div>
+
+				<div class="px-4 py-2 flex items-center justify-around border-t border-gray-200">
+					<button class="post-like-btn flex-1 flex items-center justify-center gap-2 py-2 text-gray-600 hover:bg-gray-50 rounded transition" data-post-id="${post.id}" data-likes="${post.likes}">
+						<svg class="like-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path>
+						</svg>
+						<span class="like-text text-sm font-semibold">Like</span>
+					</button>
+					<button class="flex-1 flex items-center justify-center gap-2 py-2 text-gray-600 hover:bg-gray-50 rounded transition">
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+						</svg>
+						<span class="text-sm font-semibold">Comment</span>
+					</button>
+					<button class="flex-1 flex items-center justify-center gap-2 py-2 text-gray-600 hover:bg-gray-50 rounded transition">
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+						</svg>
+						<span class="text-sm font-semibold">Share</span>
+					</button>
+				</div>
+			</article>
+		`;
+    }
+
+    // Re-aplicar event listeners para el botón de like (reutilizar lógica existente)
+    function attachLikeHandlers() {
+        document.querySelectorAll(".post-like-btn").forEach((btn) => {
+            // Remover listeners previos clonando el elemento
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode?.replaceChild(newBtn, btn);
+
+            newBtn.addEventListener("click", function (this: HTMLElement) {
+                const icon = this.querySelector(".like-icon");
+                const text = this.querySelector(".like-text");
+                const currentLikes = parseInt(this.dataset.likes || "0");
+
+                const isLiked = this.classList.contains("text-blue-600");
+
+                if (isLiked) {
+                    // Unlike
+                    this.classList.remove("text-blue-600");
+                    this.classList.add("text-gray-600");
+                    icon?.setAttribute("fill", "none");
+                    if (text) text.textContent = "Like";
+                    this.dataset.likes = (currentLikes - 1).toString();
+                } else {
+                    // Like
+                    this.classList.remove("text-gray-600");
+                    this.classList.add("text-blue-600");
+                    icon?.setAttribute("fill", "currentColor");
+                    if (text) text.textContent = "Liked";
+                    this.dataset.likes = (currentLikes + 1).toString();
+                }
+            });
+        });
+    }
+</script>
+
+<style>
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.3s ease-out;
+    }
+</style>
