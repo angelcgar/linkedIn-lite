@@ -129,3 +129,41 @@ export interface Job {
   isActivelyHiring?: boolean;
   tags?: string[];
 }
+
+// Network types
+export interface Invitation {
+  id: string;
+  user: User;
+  mutualConnections?: number;
+  sharedGroup?: string;
+  timestamp: string;
+}
+
+export interface NetworkStats {
+  connections: number;
+  groups: number;
+}
+
+// Notification types
+export type NotificationType =
+  | 'profile_view'
+  | 'post_like'
+  | 'post_comment'
+  | 'mention'
+  | 'job_alert'
+  | 'work_anniversary'
+  | 'connection_request';
+
+export interface Notification {
+  id: string;
+  type: NotificationType;
+  userId?: string;
+  user?: User;
+  message: string;
+  timestamp: string;
+  isRead: boolean;
+  actionLabel?: string;
+  postTitle?: string;
+  jobTitle?: string;
+  companyName?: string;
+}

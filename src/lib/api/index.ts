@@ -1,7 +1,9 @@
-import type { User, Post, ConnectionSuggestion, PostWithAuthor, ConversationWithUser, Message, Job } from '@/types/index.js';
+import type { User, Post, ConnectionSuggestion, PostWithAuthor, ConversationWithUser, Message, Job, Invitation, NetworkStats, Notification } from '@/types/index.js';
 import { users as usersData, posts as postsData } from '../data.js';
 import { conversations as conversationsData, messages as messagesData } from '../messaging-data.js';
 import { jobs as jobsData } from '../jobs-data.js';
+import { invitations as invitationsData, suggestedUsers as suggestedUsersData, networkStats as networkStatsData } from '../network-data.js';
+import { notifications as notificationsData } from '../notifications-data.js';
 
 /**
  * Simulated API latency (in milliseconds)
@@ -243,4 +245,53 @@ export async function getJobs(filters?: {
 export async function getJobById(id: string): Promise<Job | null> {
   const job = jobsData.find((j) => j.id === id);
   return simulateApiCall(job || null);
+}
+
+/**
+ * Get pending network invitations
+ * In a real app, this would call: GET /api/network/invitations
+ */
+export async function getNetworkInvitations(): Promise<Invitation[]> {
+  return simulateApiCall(invitationsData);
+}
+
+/**
+ * Get suggested connections
+ * In a real app, this would call: GET /api/network/suggestions
+ */
+export async function getSuggestedConnections(limit?: number): Promise<User[]> {
+  const suggestions = limit ? suggestedUsersData.slice(0, limit) : suggestedUsersData;
+  return simulateApiCall(suggestions);
+}
+
+/**
+ * Get network stats (connections, groups)
+ * In a real app, this would call: GET /api/network/stats
+ */
+export async function getNetworkStats(): Promise<NetworkStats> {
+  return simulateApiCall(networkStatsData);
+}
+
+/**
+ * Get notifications with optional filter
+ * In a real app, this would call: GET /api/notifications?filter={filter}
+ */
+export async function getNotifications(filter?: 'all' | 'posts' | 'mentions' | 'jobs'): Promise<Notification[]> {
+  let filtered = [...notificationsData];
+
+  if (filter && filter !== 'all') {
+    switch (filter) {
+      case 'posts':
+        filtered = filtered.filter((n) => n.type === 'post_like' || n.type === 'post_comment');
+        break;
+      case 'mentions':
+        filtered = filtered.filter((n) => n.type === 'mention');
+        break;
+      case 'jobs':
+        filtered = filtered.filter((n) => n.type === 'job_alert');
+        break;
+    }
+  }
+
+  return simulateApiCall(filtered);
 }

@@ -1,0 +1,140 @@
+---
+import type { Notification } from "../types/index";
+
+interface Props {
+    notification: Notification;
+}
+
+const { notification } = Astro.props;
+
+const getNotificationIcon = () => {
+    switch (notification.type) {
+        case "job_alert":
+            return (
+                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg
+                        class="w-6 h-6 text-blue-600"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"></path>
+                    </svg>
+                </div>
+            );
+        default:
+            return notification.user ? (
+                <img
+                    src={notification.user.avatar}
+                    alt={notification.user.name}
+                    class="w-12 h-12 rounded-full flex-shrink-0"
+                />
+            ) : null;
+    }
+};
+---
+
+<div
+    class={`p-4 border-l-4 ${notification.isRead ? "bg-white border-transparent" : "bg-blue-50 border-blue-600"} hover:bg-gray-50 transition`}
+    data-notification-id={notification.id}
+    data-is-read={notification.isRead}
+>
+    <div class="flex gap-3">
+        <!-- Icon or Avatar -->
+        <Fragment set:html={getNotificationIcon()} />
+
+        <!-- Content -->
+        <div class="flex-1 min-w-0">
+            <p class="text-gray-900 text-sm mb-1">
+                {
+                    notification.user && (
+                        <span class="font-bold">{notification.user.name}</span>
+                    )
+                }
+                {" "}
+                <span>{notification.message}</span>
+                {
+                    notification.postTitle && (
+                        <span class="italic text-gray-600">
+                            '{notification.postTitle}'
+                        </span>
+                    )
+                }
+                {
+                    notification.jobTitle && notification.companyName && (
+                        <span class="font-semibold">
+                            {notification.jobTitle} at{" "}
+                            <span class="text-blue-600">
+                                {notification.companyName}
+                            </span>
+                        </span>
+                    )
+                }
+            </p>
+
+            <div class="flex items-center gap-3">
+                <span class="text-gray-500 text-xs"
+                    >{notification.timestamp}</span
+                >
+
+                {
+                    notification.actionLabel && (
+                        <button class="text-blue-600 text-xs font-semibold px-3 py-1 border border-blue-600 rounded-full hover:bg-blue-50 transition">
+                            {notification.actionLabel}
+                        </button>
+                    )
+                }
+            </div>
+        </div>
+
+        <!-- More Options -->
+        <button
+            class="flex-shrink-0 p-2 hover:bg-gray-100 rounded-full transition -mt-1"
+        >
+            <svg
+                class="w-5 h-5 text-gray-600"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+                ></path>
+            </svg>
+        </button>
+
+        <!-- Unread Indicator -->
+        {
+            !notification.isRead && (
+                <div class="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-2" />
+            )
+        }
+    </div>
+</div>
+
+<script>
+    document.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement;
+        const notificationCard = target.closest(
+            "[data-notification-id]",
+        ) as HTMLElement;
+
+        if (!notificationCard) return;
+
+        const isRead = notificationCard.dataset.isRead === "true";
+
+        if (!isRead) {
+            // Mark as read
+            notificationCard.classList.remove("bg-blue-50", "border-blue-600");
+            notificationCard.classList.add("bg-white", "border-transparent");
+            notificationCard.dataset.isRead = "true";
+
+            // Remove unread indicator
+            const unreadDot = notificationCard.querySelector(
+                ".bg-blue-600.rounded-full.w-2",
+            );
+            unreadDot?.remove();
+
+            const notificationId = notificationCard.dataset.notificationId;
+            console.log(`Marked notification ${notificationId} as read`);
+        }
+    });
+</script>

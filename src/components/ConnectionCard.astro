@@ -1,0 +1,77 @@
+---
+import type { User } from "../types/index";
+
+interface Props {
+    user: User;
+    colorClass?: string;
+}
+
+const { user, colorClass = "bg-blue-500" } = Astro.props;
+---
+
+<div class="bg-white rounded-lg shadow-sm overflow-hidden">
+    <!-- Colored Header -->
+    <div class={`h-20 ${colorClass}`}></div>
+
+    <!-- User Info -->
+    <div class="px-4 pb-4 -mt-10 text-center">
+        <img
+            src={user.avatar}
+            alt={user.name}
+            class="w-20 h-20 rounded-full border-4 border-white mx-auto mb-3"
+        />
+
+        <h3 class="font-bold text-gray-900 text-base mb-1">
+            {user.name}
+        </h3>
+
+        <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+            {user.title}
+        </p>
+
+        <button
+            class="w-full px-4 py-2 border-2 border-blue-600 text-blue-600 font-semibold rounded-full hover:bg-blue-50 transition"
+            data-user-id={user.id}
+            data-action="connect"
+        >
+            Connect
+        </button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement;
+        const button = target.closest(
+            "[data-action='connect']",
+        ) as HTMLButtonElement;
+
+        if (!button) return;
+
+        const userId = button.dataset.userId;
+        console.log(`Connect request sent to user: ${userId}`);
+
+        // Update button state
+        button.textContent = "Pending";
+        button.disabled = true;
+        button.classList.remove(
+            "border-blue-600",
+            "text-blue-600",
+            "hover:bg-blue-50",
+        );
+        button.classList.add(
+            "border-gray-300",
+            "text-gray-500",
+            "cursor-not-allowed",
+        );
+    });
+</script>
+
+<style>
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>

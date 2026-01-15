@@ -1,0 +1,237 @@
+---
+import Layout from "../layouts/Layout.astro";
+import InvitationCard from "../components/InvitationCard.astro";
+import ConnectionCard from "../components/ConnectionCard.astro";
+import {
+    getNetworkInvitations,
+    getSuggestedConnections,
+    getNetworkStats,
+} from "../lib/api/index.js";
+
+const invitations = await getNetworkInvitations();
+const suggestedConnections = await getSuggestedConnections();
+const networkStats = await getNetworkStats();
+
+const colorClasses = [
+    "bg-blue-500",
+    "bg-green-500",
+    "bg-orange-500",
+    "bg-purple-500",
+];
+---
+
+<Layout>
+    <div class="min-h-screen bg-gray-50 pb-20">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+            <div
+                class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between"
+            >
+                <div class="flex items-center gap-3">
+                    <button
+                        class="p-2 hover:bg-gray-100 rounded-full transition"
+                    >
+                        <svg
+                            class="w-6 h-6 text-gray-700"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                            ></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <h1 class="text-xl font-semibold text-gray-900">My Network</h1>
+
+                <button class="p-2 hover:bg-gray-100 rounded-full transition">
+                    <svg
+                        class="w-6 h-6 text-gray-700"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"
+                        ></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <main class="max-w-5xl mx-auto px-4 py-6">
+            <!-- Manage Network Card -->
+            <a
+                href="#"
+                class="block bg-white rounded-lg shadow-sm p-6 mb-6 hover:shadow-md transition"
+            >
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center"
+                    >
+                        <svg
+                            class="w-6 h-6 text-blue-600"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"
+                            ></path>
+                        </svg>
+                    </div>
+
+                    <div class="flex-1">
+                        <h2 class="font-bold text-gray-900 text-lg mb-1">
+                            Manage my network
+                        </h2>
+                        <p class="text-gray-600 text-sm">
+                            {networkStats.connections} Connections, {
+                                networkStats.groups
+                            } Groups
+                        </p>
+                    </div>
+
+                    <svg
+                        class="w-6 h-6 text-gray-400"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
+                        ></path>
+                    </svg>
+                </div>
+            </a>
+
+            <!-- Invitations Section -->
+            {
+                invitations.length > 0 && (
+                    <section class="mb-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-xl font-bold text-gray-900">
+                                Invitations ({invitations.length})
+                            </h2>
+                            <a
+                                href="#"
+                                class="text-blue-600 font-semibold text-sm hover:underline"
+                            >
+                                See all
+                            </a>
+                        </div>
+
+                        <div class="space-y-4">
+                            {invitations.map((invitation) => (
+                                <InvitationCard invitation={invitation} />
+                            ))}
+                        </div>
+                    </section>
+                )
+            }
+
+            <!-- People You May Know Section -->
+            <section>
+                <h2 class="text-xl font-bold text-gray-900 mb-4">
+                    People you may know
+                </h2>
+
+                <div
+                    class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+                >
+                    {
+                        suggestedConnections.map((user, index) => (
+                            <ConnectionCard
+                                user={user}
+                                colorClass={
+                                    colorClasses[index % colorClasses.length]
+                                }
+                            />
+                        ))
+                    }
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav
+            class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-2"
+        >
+            <div class="max-w-5xl mx-auto flex items-center justify-around">
+                <a
+                    href="/"
+                    class="flex flex-col items-center py-2 text-gray-600 hover:text-gray-900 transition"
+                >
+                    <svg
+                        class="w-6 h-6"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
+                    </svg>
+                    <span class="text-xs mt-1">Home</span>
+                </a>
+                <a
+                    href="/network"
+                    class="flex flex-col items-center py-2 text-blue-600"
+                >
+                    <svg
+                        class="w-6 h-6"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"
+                        ></path>
+                    </svg>
+                    <span class="text-xs mt-1">Network</span>
+                </a>
+                <button class="flex flex-col items-center py-2 -mt-6">
+                    <div
+                        class="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-lg"
+                    >
+                        <svg
+                            class="w-8 h-8 text-white"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+                            ></path>
+                        </svg>
+                    </div>
+                </button>
+                <a
+                    href="/jobs"
+                    class="flex flex-col items-center py-2 text-gray-600 hover:text-gray-900 transition"
+                >
+                    <svg
+                        class="w-6 h-6"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"
+                        ></path>
+                    </svg>
+                    <span class="text-xs mt-1">Jobs</span>
+                </a>
+                <a
+                    href="/settings"
+                    class="flex flex-col items-center py-2 text-gray-600 hover:text-gray-900 transition"
+                >
+                    <svg
+                        class="w-6 h-6"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"
+                        ></path>
+                    </svg>
+                    <span class="text-xs mt-1">Settings</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+</Layout>
