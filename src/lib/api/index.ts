@@ -1,6 +1,7 @@
-import type { User, Post, ConnectionSuggestion, PostWithAuthor, ConversationWithUser, Message } from '@/types/index.js';
+import type { User, Post, ConnectionSuggestion, PostWithAuthor, ConversationWithUser, Message, Job } from '@/types/index.js';
 import { users as usersData, posts as postsData } from '../data.js';
 import { conversations as conversationsData, messages as messagesData } from '../messaging-data.js';
+import { jobs as jobsData } from '../jobs-data.js';
 
 /**
  * Simulated API latency (in milliseconds)
@@ -185,4 +186,61 @@ export async function sendMessage(conversationId: string, content: string): Prom
   messagesData.push(newMessage);
 
   return simulateApiCall(newMessage);
+}
+
+/**
+ * Get all jobs with optional filtering
+ * In a real app, this would call: GET /api/jobs?filters={filters}
+ */
+export async function getJobs(filters?: {
+  query?: string;
+  location?: string;
+  isRemote?: boolean;
+  type?: string;
+  experienceLevel?: string;
+}): Promise<Job[]> {
+  let filteredJobs = [...jobsData];
+
+  if (filters) {
+    if (filters.query) {
+      const query = filters.query.toLowerCase();
+      filteredJobs = filteredJobs.filter(
+        (job) =>
+          job.title.toLowerCase().includes(query) ||
+          job.company.name.toLowerCase().includes(query)
+      );
+    }
+
+    if (filters.location) {
+      const location = filters.location.toLowerCase();
+      filteredJobs = filteredJobs.filter(
+        (job) =>
+          job.location.city.toLowerCase().includes(location) ||
+          job.location.state?.toLowerCase().includes(location)
+      );
+    }
+
+    if (filters.isRemote !== undefined) {
+      filteredJobs = filteredJobs.filter((job) => job.location.isRemote === filters.isRemote);
+    }
+
+    if (filters.type) {
+      filteredJobs = filteredJobs.filter((job) => job.type === filters.type);
+    }
+
+    if (filters.experienceLevel) {
+      filteredJobs = filteredJobs.filter((job) => job.experienceLevel === filters.experienceLevel);
+    }
+  }
+
+  return simulateApiCall(filteredJobs);
+}
+
+/**
+ * Get a specific job by ID
+ * In a real app, this would call: GET /api/jobs/{id}
+ */
+export async function getJobById(id: string): Promise<Job | null> {
+  const job = jobsData.find((j) => j.id === id);
+  return simulateApiCall(job || null);
 }

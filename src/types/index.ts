@@ -88,3 +88,44 @@ export interface ConversationWithUser {
   conversation: Conversation;
   otherUser: User;
 }
+
+// Jobs types
+export interface Company {
+  id: string;
+  name: string;
+  logo: string;
+  size?: string;
+  industry?: string;
+  description?: string;
+}
+
+export interface JobLocation {
+  city: string;
+  state?: string;
+  country?: string;
+  isRemote: boolean;
+}
+
+export type JobType = 'Full-time' | 'Part-time' | 'Contract' | 'Internship';
+export type ExperienceLevel = 'Entry level' | 'Mid-Senior level' | 'Director' | 'Executive';
+
+export interface Job {
+  id: string;
+  title: string;
+  company: Company;
+  location: JobLocation;
+  type: JobType;
+  experienceLevel: ExperienceLevel;
+  salary?: {
+    min: number;
+    max: number;
+    currency: string;
+  };
+  description: string;
+  responsibilities: string[];
+  requirements: string[];
+  postedDate: string;
+  applicants: number;
+  isActivelyHiring?: boolean;
+  tags?: string[];
+}
