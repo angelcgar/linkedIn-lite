@@ -167,3 +167,24 @@ export interface Notification {
   jobTitle?: string;
   companyName?: string;
 }
+
+// Saved Items Types
+export interface SavedJob {
+  id: string;
+  job: Job;
+  savedDate: string;
+}
+
+export interface SavedPost {
+  id: string;
+  post: PostWithAuthor;
+  savedDate: string;
+}
+
+// Premium Types
+export interface PremiumFeature {
+  id: string;
+  title: string;
+  description: string;
+  icon: 'eye' | 'mail' | 'star' | 'badge' | 'learning';
+}

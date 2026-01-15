@@ -1,9 +1,11 @@
-import type { User, Post, ConnectionSuggestion, PostWithAuthor, ConversationWithUser, Message, Job, Invitation, NetworkStats, Notification } from '@/types/index.js';
+import type { User, Post, ConnectionSuggestion, PostWithAuthor, ConversationWithUser, Message, Job, Invitation, NetworkStats, Notification, SavedJob, SavedPost, PremiumFeature } from '@/types/index.js';
 import { users as usersData, posts as postsData } from '../data.js';
 import { conversations as conversationsData, messages as messagesData } from '../messaging-data.js';
 import { jobs as jobsData } from '../jobs-data.js';
 import { invitations as invitationsData, suggestedUsers as suggestedUsersData, networkStats as networkStatsData } from '../network-data.js';
 import { notifications as notificationsData } from '../notifications-data.js';
+import { savedJobs as savedJobsData, savedPosts as savedPostsData } from '../saved-data.js';
+import { premiumFeatures as premiumFeaturesData } from '../premium-data.js';
 
 /**
  * Simulated API latency (in milliseconds)
@@ -294,4 +296,25 @@ export async function getNotifications(filter?: 'all' | 'posts' | 'mentions' | '
   }
 
   return simulateApiCall(filtered);
+}
+
+/**
+ * Get saved jobs
+ */
+export async function getSavedJobs(): Promise<SavedJob[]> {
+  return simulateApiCall(savedJobsData);
+}
+
+/**
+ * Get saved posts
+ */
+export async function getSavedPosts(): Promise<SavedPost[]> {
+  return simulateApiCall(savedPostsData);
+}
+
+/**
+ * Get premium features
+ */
+export async function getPremiumFeatures(): Promise<PremiumFeature[]> {
+  return simulateApiCall(premiumFeaturesData);
 }
