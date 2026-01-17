@@ -16,6 +16,7 @@ export interface User {
   skills?: string[];
   isOnline?: boolean;
   lastSeen?: string;
+  email?: string; // Propiedad opcional para configuración de cuenta
 }
 
 export interface Experience {

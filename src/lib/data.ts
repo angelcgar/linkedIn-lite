@@ -15,6 +15,7 @@ export const users: User[] = [
     location: 'San Francisco, CA',
     about:
       'Passionate Product Designer with 5+ years of experience in creating user-centric digital experiences. I specialize in design systems, mobile-first strategies, and bridging the gap between design and engineering.',
+    email: 'alex.j@design.com',
     experience: [
       {
         id: 'exp-1',

@@ -312,7 +312,9 @@ const location = "Singapore (Remote)";
     const uploadNewBtn = document.getElementById("upload-new-btn");
     const fileNameSpan = document.getElementById("file-name");
     const fileDateSpan = document.getElementById("file-date");
-    const submitBtn = document.getElementById("submit-btn");
+    const submitBtn = document.getElementById(
+        "submit-btn",
+    ) as HTMLButtonElement;
     const easyApplyForm = document.getElementById("easy-apply-form");
 
     // Hacer click en el área de upload
@@ -402,8 +404,10 @@ const location = "Singapore (Remote)";
         e.preventDefault();
 
         // Simular envío
-        submitBtn!.textContent = "Submitting...";
-        submitBtn!.disabled = true;
+        if (submitBtn) {
+            submitBtn.textContent = "Submitting...";
+            submitBtn.disabled = true;
+        }
 
         setTimeout(() => {
             // Mostrar mensaje de éxito y redirigir

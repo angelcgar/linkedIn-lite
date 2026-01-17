@@ -14,7 +14,7 @@ const companyAvatar = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeUR
 )}`;
 
 // Format location
-const locationText = job.location.remote
+const locationText = job.location.isRemote
     ? "Remote"
     : `${job.location.city}, ${job.location.state}`;
 ---
