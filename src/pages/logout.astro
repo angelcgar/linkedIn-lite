@@ -1,0 +1,121 @@
+---
+// Página de logout visual - no hay sesiones reales que limpiar
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Signing out | LinkedIn-lite</title>
+        <link rel="stylesheet" href="/src/styles/global.css" />
+    </head>
+    <body>
+        <div
+            class="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-linkedin-blue via-linkedin-blue-light to-blue-400 overflow-hidden"
+        >
+            <!-- Animated Background -->
+            <div class="animated-gradient"></div>
+
+            <!-- Content -->
+            <div class="relative z-10 text-center text-white px-6">
+                <!-- LinkedIn Logo -->
+                <svg
+                    class="w-20 h-20 mx-auto mb-6 opacity-90"
+                    viewBox="0 0 84 21"
+                    fill="currentColor"
+                >
+                    <path
+                        d="M19.479 0L1.583 0 1.583 18.21 19.479 18.21z"
+                        fill="white"></path>
+                </svg>
+
+                <!-- Loading Spinner -->
+                <div class="flex justify-center mb-6">
+                    <div class="spinner"></div>
+                </div>
+
+                <!-- Text -->
+                <h1 class="text-2xl font-semibold mb-2">Signing you out</h1>
+                <p class="text-blue-100 text-sm">
+                    Thanks for visiting LinkedIn-lite
+                </p>
+            </div>
+        </div>
+
+        <style>
+            /* Gradiente animado de fondo */
+            .animated-gradient {
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(
+                    45deg,
+                    rgba(10, 102, 194, 0.3),
+                    rgba(55, 143, 233, 0.3),
+                    rgba(10, 102, 194, 0.3)
+                );
+                background-size: 200% 200%;
+                animation: gradientShift 8s ease infinite;
+                z-index: 1;
+            }
+
+            @keyframes gradientShift {
+                0% {
+                    background-position: 0% 50%;
+                }
+                50% {
+                    background-position: 100% 50%;
+                }
+                100% {
+                    background-position: 0% 50%;
+                }
+            }
+
+            /* Spinner de carga */
+            .spinner {
+                width: 48px;
+                height: 48px;
+                border: 4px solid rgba(255, 255, 255, 0.3);
+                border-top-color: white;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            /* Fade in suave */
+            body {
+                animation: fadeIn 0.4s ease-in;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+        </style>
+
+        <script>
+            // Este es el momento perfecto para limpiar todas las sesiones o cosas relacionadas con el usuario
+
+            // Simular logout y redirección
+            setTimeout(() => {
+                // En una app real, aquí se limpiaría:
+                // - localStorage
+                // - sessionStorage
+                // - cookies de sesión
+                // - se invalidaría el token en el backend
+
+                // Redirigir al login después de simular el proceso
+                window.location.href = "/login";
+            }, 2000);
+        </script>
+    </body>
+</html>

@@ -8,10 +8,10 @@ interface Props {
 const { currentUser } = Astro.props;
 ---
 
-<!-- Modal Backdrop -->
+<!-- Modal Backdrop - Gradiente sutil azul-gris -->
 <div
     id="create-post-modal"
-    class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4"
+    class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop"
 >
     <!-- Modal Content -->
     <div
@@ -238,14 +238,48 @@ const { currentUser } = Astro.props;
         postSubmitBtn.disabled = !hasContent;
     });
 
+    // Detectar Ctrl+Enter para enviar post
+    postContent?.addEventListener("keydown", (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+            e.preventDefault();
+            if (!postSubmitBtn.disabled) {
+                postForm?.requestSubmit();
+            }
+        }
+    });
+
+    // Simular respuesta del backend
+    async function simulateBackendPostCreation(
+        postData: any,
+    ): Promise<boolean> {
+        // En una app real, esto sería:
+        // const response = await fetch('/api/posts', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify(postData)
+        // });
+        // return response.ok;
+
+        // Simulación: siempre retorna true después de un delay
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(true);
+            }, 300);
+        });
+    }
+
     // Manejar envío del formulario
-    postForm?.addEventListener("submit", (e) => {
+    postForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const content = postContent.value.trim();
         if (!content) return;
 
-        // Crear nuevo post (simulado localmente)
+        // Deshabilitar botón durante el envío
+        postSubmitBtn.disabled = true;
+        postSubmitBtn.textContent = "Posting...";
+
+        // Crear nuevo post (optimistic UI)
         const newPost = {
             id: `post-${Date.now()}`,
             userId: "current-user",
@@ -263,21 +297,34 @@ const { currentUser } = Astro.props;
             : null;
 
         if (currentUser) {
-            // Crear elemento HTML del nuevo post
+            // Actualización optimista: mostrar el post inmediatamente
             const postHTML = createPostElement(newPost, currentUser);
-
-            // Insertar al inicio del feed
             const postsContainer = document.querySelector(".posts-feed");
+
             if (postsContainer) {
                 postsContainer.insertAdjacentHTML("afterbegin", postHTML);
-
-                // Re-aplicar event listeners para like en el nuevo post
                 attachLikeHandlers();
+            }
+
+            // Simular llamada al backend
+            const success = await simulateBackendPostCreation(newPost);
+
+            if (success) {
+                // Backend confirmó éxito - el post ya está mostrado
+                console.log("Post created successfully");
+            } else {
+                // Si el backend falla, eliminar el post optimista
+                console.error("Failed to create post");
+                const optimisticPost = document.querySelector(
+                    `[data-post-id="${newPost.id}"]`,
+                );
+                optimisticPost?.closest("article")?.remove();
             }
         }
 
         // Cerrar modal y resetear
         closeModal();
+        postSubmitBtn.textContent = "Post";
     });
 
     // Función para crear HTML del post
@@ -376,6 +423,19 @@ const { currentUser } = Astro.props;
 </script>
 
 <style>
+    /* Gradiente sutil azul-gris para el backdrop */
+    .modal-backdrop {
+        background: linear-gradient(
+            135deg,
+            rgba(226, 232, 240, 0.95) 0%,
+            rgba(203, 213, 225, 0.95) 25%,
+            rgba(191, 219, 254, 0.95) 50%,
+            rgba(219, 234, 254, 0.95) 75%,
+            rgba(226, 232, 240, 0.95) 100%
+        );
+        backdrop-filter: blur(8px);
+    }
+
     @keyframes fadeIn {
         from {
             opacity: 0;
