@@ -14,16 +14,12 @@ const { searchQuery, posts } = Astro.props;
     <div class="p-4 border-b border-gray-200">
         <div class="flex items-center justify-between">
             <h3 class="font-semibold text-gray-900">
-                {
-                    searchQuery
-                        ? `Search results for "${searchQuery}"`
-                        : "All Posts"
-                }
+                {searchQuery ? `Resultados para "${searchQuery}"` : "All Posts"}
             </h3>
             {
                 searchQuery && (
                     <a href="/" class="text-sm text-blue-600 hover:underline">
-                        Clear search
+                        Volver al Feed
                     </a>
                 )
             }
@@ -60,11 +56,13 @@ const { searchQuery, posts } = Astro.props;
                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                     />
                 </svg>
-                <p class="text-gray-500 font-medium mb-2">No posts found</p>
+                <p class="text-gray-500 font-medium mb-2">
+                    No se encontraron resultados
+                </p>
                 <p class="text-sm text-gray-400">
-                    Try different keywords or{" "}
+                    Intenta con otras palabras clave o{" "}
                     <a href="/" class="text-blue-600 hover:underline">
-                        view all posts
+                        vuelve al feed
                     </a>
                 </p>
             </div>

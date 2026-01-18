@@ -6,22 +6,27 @@ import { getJobs } from "../../lib/api/index.js";
 // Obtener parámetros de filtro desde URL
 const searchQuery = Astro.url.searchParams.get("query") || "";
 const locationQuery = Astro.url.searchParams.get("location") || "";
-const isRemote = Astro.url.searchParams.get("remote") === "true";
+const remoteParam = Astro.url.searchParams.get("remote");
+const isRemote = remoteParam === "true" ? true : undefined;
 const jobType = Astro.url.searchParams.get("type") || "";
 const experienceLevel = Astro.url.searchParams.get("level") || "";
 
-// Aplicar filtros
+// Aplicar filtros (solo enviar parámetros que tienen valor)
 const jobs = await getJobs({
-    query: searchQuery,
-    location: locationQuery,
-    isRemote: isRemote || undefined,
-    type: jobType,
-    experienceLevel: experienceLevel,
+    query: searchQuery || undefined,
+    location: locationQuery || undefined,
+    isRemote: isRemote,
+    type: jobType || undefined,
+    experienceLevel: experienceLevel || undefined,
 });
 
 // Verificar si hay filtros activos
 const hasActiveFilters =
-    searchQuery || locationQuery || isRemote || jobType || experienceLevel;
+    searchQuery ||
+    locationQuery ||
+    remoteParam === "true" ||
+    jobType ||
+    experienceLevel;
 ---
 
 <Layout>
@@ -299,7 +304,10 @@ const hasActiveFilters =
                                 <span class="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
                                     Remote
                                     <a
-                                        href={`/jobs?query=${searchQuery}&location=${locationQuery}&type=${jobType}&level=${experienceLevel}`}
+                                        href={`/jobs${searchQuery || locationQuery || jobType || experienceLevel ? "?" : ""}${searchQuery ? `query=${searchQuery}&` : ""}${locationQuery ? `location=${locationQuery}&` : ""}${jobType ? `type=${jobType}&` : ""}${experienceLevel ? `level=${experienceLevel}` : ""}`.replace(
+                                            /&$/,
+                                            "",
+                                        )}
                                         class="hover:bg-blue-200 rounded-full p-0.5"
                                     >
                                         <svg
@@ -320,7 +328,10 @@ const hasActiveFilters =
                                 <span class="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
                                     {jobType}
                                     <a
-                                        href={`/jobs?query=${searchQuery}&location=${locationQuery}&remote=${isRemote}&level=${experienceLevel}`}
+                                        href={`/jobs${searchQuery || locationQuery || isRemote || experienceLevel ? "?" : ""}${searchQuery ? `query=${searchQuery}&` : ""}${locationQuery ? `location=${locationQuery}&` : ""}${isRemote ? `remote=true&` : ""}${experienceLevel ? `level=${experienceLevel}` : ""}`.replace(
+                                            /&$/,
+                                            "",
+                                        )}
                                         class="hover:bg-blue-200 rounded-full p-0.5"
                                     >
                                         <svg
@@ -341,7 +352,10 @@ const hasActiveFilters =
                                 <span class="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
                                     {experienceLevel}
                                     <a
-                                        href={`/jobs?query=${searchQuery}&location=${locationQuery}&remote=${isRemote}&type=${jobType}`}
+                                        href={`/jobs${searchQuery || locationQuery || isRemote || jobType ? "?" : ""}${searchQuery ? `query=${searchQuery}&` : ""}${locationQuery ? `location=${locationQuery}&` : ""}${isRemote ? `remote=true&` : ""}${jobType ? `type=${jobType}` : ""}`.replace(
+                                            /&$/,
+                                            "",
+                                        )}
                                         class="hover:bg-blue-200 rounded-full p-0.5"
                                     >
                                         <svg
