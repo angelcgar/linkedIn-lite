@@ -1,12 +1,23 @@
 ---
-import type { Post, User } from "../types/index.js";
+import type { Post, User, PostWithAuthor } from "../types/index.js";
 
 interface Props {
-    post: Post;
-    author: User;
+    post?: Post;
+    author?: User;
+    postWithAuthor?: PostWithAuthor;
 }
 
-const { post, author } = Astro.props;
+const { post: postProp, author: authorProp, postWithAuthor } = Astro.props;
+
+// Soportar ambos formatos: separado (post + author) o combinado (postWithAuthor)
+const post = postProp || postWithAuthor?.post;
+const author = authorProp || postWithAuthor?.author;
+
+if (!post || !author) {
+    throw new Error(
+        "Post component requires either (post + author) or postWithAuthor",
+    );
+}
 ---
 
 <article class="bg-white rounded-lg border border-gray-200 mb-4">

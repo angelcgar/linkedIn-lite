@@ -1,0 +1,73 @@
+---
+import type { PostWithAuthor } from "@/types/index.js";
+import Post from "./Post.astro";
+
+interface Props {
+    searchQuery: string;
+    posts: PostWithAuthor[];
+}
+
+const { searchQuery, posts } = Astro.props;
+---
+
+<div class="bg-white rounded-lg shadow mb-4">
+    <div class="p-4 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+            <h3 class="font-semibold text-gray-900">
+                {
+                    searchQuery
+                        ? `Search results for "${searchQuery}"`
+                        : "All Posts"
+                }
+            </h3>
+            {
+                searchQuery && (
+                    <a href="/" class="text-sm text-blue-600 hover:underline">
+                        Clear search
+                    </a>
+                )
+            }
+        </div>
+        {
+            searchQuery && (
+                <p class="text-sm text-gray-600 mt-1">
+                    {posts.length} {posts.length === 1 ? "result" : "results"}{" "}
+                    found
+                </p>
+            )
+        }
+    </div>
+
+    {
+        posts.length > 0 ? (
+            <div>
+                {posts.map((postWithAuthor) => (
+                    <Post postWithAuthor={postWithAuthor} />
+                ))}
+            </div>
+        ) : (
+            <div class="p-8 text-center">
+                <svg
+                    class="w-16 h-16 mx-auto text-gray-300 mb-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                </svg>
+                <p class="text-gray-500 font-medium mb-2">No posts found</p>
+                <p class="text-sm text-gray-400">
+                    Try different keywords or{" "}
+                    <a href="/" class="text-blue-600 hover:underline">
+                        view all posts
+                    </a>
+                </p>
+            </div>
+        )
+    }
+</div>

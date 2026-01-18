@@ -6,6 +6,7 @@ import { invitations as invitationsData, suggestedUsers as suggestedUsersData, n
 import { notifications as notificationsData } from '../notifications-data.js';
 import { savedJobs as savedJobsData, savedPosts as savedPostsData } from '../saved-data.js';
 import { premiumFeatures as premiumFeaturesData } from '../premium-data.js';
+import { searchPosts } from '../search-utils.js';
 
 /**
  * Simulated API latency (in milliseconds)
@@ -52,9 +53,9 @@ export async function getUserSuggestions(limit = 3): Promise<ConnectionSuggestio
 
 /**
  * Get all posts with enriched author data
- * In a real app, this would call: GET /api/posts?include=author
+ * In a real app, this would call: GET /api/posts?include=author&query={query}
  */
-export async function getPosts(): Promise<PostWithAuthor[]> {
+export async function getPosts(query?: string): Promise<PostWithAuthor[]> {
   const enrichedPosts: PostWithAuthor[] = postsData.map((post) => {
     const author = usersData.find((u) => u.id === post.userId);
     if (!author) {
@@ -65,6 +66,11 @@ export async function getPosts(): Promise<PostWithAuthor[]> {
       author,
     };
   });
+
+  // Aplicar búsqueda si existe query
+  if (query && query.trim()) {
+    return simulateApiCall(searchPosts(enrichedPosts, query));
+  }
 
   return simulateApiCall(enrichedPosts);
 }

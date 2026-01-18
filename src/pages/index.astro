@@ -5,6 +5,7 @@ import ProfileSidebar from "../components/ProfileSidebar.astro";
 import RightSidebar from "../components/RightSidebar.astro";
 import Post from "../components/Post.astro";
 import CreatePostModal from "../components/CreatePostModal.astro";
+import SearchResults from "../components/SearchResults.astro";
 
 import {
 	getCurrentUser,
@@ -12,10 +13,13 @@ import {
 	getPosts,
 } from "../lib/api/index.js";
 
+// Obtener parámetro de búsqueda desde URL
+const searchQuery = Astro.url.searchParams.get("q") || "";
+
 // Fetch data using API layer (simulated for now, ready for real backend)
 const currentUser = await getCurrentUser();
 const suggestions = await getUserSuggestions(3);
-const enrichedPosts = await getPosts();
+const enrichedPosts = await getPosts(searchQuery);
 
 // Handle case where current user is not found
 if (!currentUser) {
@@ -90,13 +94,20 @@ if (!currentUser) {
 				</div>
 
 				<!-- Posts Feed -->
-				<div class="posts-feed">
-					{
-						enrichedPosts.map(({ post, author }) => (
-							<Post post={post} author={author} />
-						))
-					}
-				</div>
+				{
+					searchQuery ? (
+						<SearchResults
+							searchQuery={searchQuery}
+							posts={enrichedPosts}
+						/>
+					) : (
+						<div class="posts-feed">
+							{enrichedPosts.map((postWithAuthor) => (
+								<Post postWithAuthor={postWithAuthor} />
+							))}
+						</div>
+					)
+				}
 			</div>
 
 			<!-- Right Sidebar -->

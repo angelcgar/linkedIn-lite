@@ -1,0 +1,410 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+---
+
+<Layout>
+    <Navbar />
+
+    <main class="max-w-4xl mx-auto px-4 py-12">
+        <article class="bg-white rounded-lg shadow-sm p-8">
+            <!-- Header -->
+            <header class="mb-8 pb-6 border-b border-gray-200">
+                <h1 class="text-4xl font-bold text-gray-900 mb-3">
+                    Advertising on LinkedIn Lite
+                </h1>
+                <p class="text-lg text-gray-600">
+                    Learn about advertising opportunities in this demo platform
+                </p>
+            </header>
+
+            <!-- Demo Notice -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded mb-8">
+                <p class="text-sm text-blue-900 font-medium">
+                    Note: LinkedIn Lite is a demo application. No actual
+                    advertising services are offered. This page demonstrates
+                    what an advertising information page might look like.
+                </p>
+            </div>
+
+            <!-- Why Advertise -->
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+                    Why Advertise With Us
+                </h2>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    In a real LinkedIn-like platform, advertising would allow
+                    businesses to reach professional audiences with targeted
+                    campaigns. Here is how it would work:
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center p-6 bg-gray-50 rounded-lg">
+                        <div
+                            class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <svg
+                                class="w-6 h-6 text-blue-600"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"
+                                ></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-900 mb-2">
+                            Targeted Reach
+                        </h3>
+                        <p class="text-sm text-gray-600">
+                            Connect with professionals based on industry, role,
+                            and location
+                        </p>
+                    </div>
+
+                    <div class="text-center p-6 bg-gray-50 rounded-lg">
+                        <div
+                            class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <svg
+                                class="w-6 h-6 text-green-600"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"
+                                ></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-900 mb-2">
+                            Measurable Results
+                        </h3>
+                        <p class="text-sm text-gray-600">
+                            Track engagement, clicks, and conversions in
+                            real-time
+                        </p>
+                    </div>
+
+                    <div class="text-center p-6 bg-gray-50 rounded-lg">
+                        <div
+                            class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <svg
+                                class="w-6 h-6 text-purple-600"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                                ></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-900 mb-2">
+                            Multiple Formats
+                        </h3>
+                        <p class="text-sm text-gray-600">
+                            Choose from sponsored content, display ads, and
+                            video campaigns
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ad Types -->
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+                    Advertising Formats
+                </h2>
+                <div class="space-y-4">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-10 h-10 bg-blue-600 text-white rounded flex items-center justify-center flex-shrink-0 font-bold"
+                            >
+                                1
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-900 mb-2">
+                                    Sponsored Content
+                                </h3>
+                                <p
+                                    class="text-gray-600 text-sm leading-relaxed"
+                                >
+                                    Native ads that appear directly in the news
+                                    feed, blending seamlessly with organic
+                                    content. Perfect for brand awareness and
+                                    thought leadership.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-10 h-10 bg-blue-600 text-white rounded flex items-center justify-center flex-shrink-0 font-bold"
+                            >
+                                2
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-900 mb-2">
+                                    Text Ads
+                                </h3>
+                                <p
+                                    class="text-gray-600 text-sm leading-relaxed"
+                                >
+                                    Simple, cost-effective ads that appear in
+                                    the sidebar. Ideal for driving website
+                                    traffic and lead generation on a budget.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-10 h-10 bg-blue-600 text-white rounded flex items-center justify-center flex-shrink-0 font-bold"
+                            >
+                                3
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-900 mb-2">
+                                    Message Ads
+                                </h3>
+                                <p
+                                    class="text-gray-600 text-sm leading-relaxed"
+                                >
+                                    Deliver personalized messages directly to
+                                    user inboxes. Best for event promotions,
+                                    webinar registrations, and direct
+                                    engagement.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-10 h-10 bg-blue-600 text-white rounded flex items-center justify-center flex-shrink-0 font-bold"
+                            >
+                                4
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-900 mb-2">
+                                    Video Ads
+                                </h3>
+                                <p
+                                    class="text-gray-600 text-sm leading-relaxed"
+                                >
+                                    Engage audiences with compelling video
+                                    content. Capture attention and tell your
+                                    brand story in a dynamic format.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pricing -->
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+                    Pricing Models
+                </h2>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    In a real platform, advertisers would have flexible pricing
+                    options:
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="font-semibold text-gray-900 mb-3">
+                            Cost Per Click (CPC)
+                        </h3>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Pay only when users click on your ad. Great for
+                            driving traffic and conversions.
+                        </p>
+                        <div class="text-2xl font-bold text-blue-600">
+                            $2-$6
+                            <span class="text-sm font-normal text-gray-500"
+                                >per click</span
+                            >
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="font-semibold text-gray-900 mb-3">
+                            Cost Per Impression (CPM)
+                        </h3>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Pay per 1,000 impressions. Ideal for brand awareness
+                            campaigns.
+                        </p>
+                        <div class="text-2xl font-bold text-blue-600">
+                            $6-$12
+                            <span class="text-sm font-normal text-gray-500"
+                                >per 1000 impressions</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Targeting -->
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+                    Targeting Options
+                </h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    Reach the right audience with precise targeting:
+                </p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    <div
+                        class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg"
+                    >
+                        <svg
+                            class="w-5 h-5 text-blue-600"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-sm text-gray-700">Location</span>
+                    </div>
+                    <div
+                        class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg"
+                    >
+                        <svg
+                            class="w-5 h-5 text-blue-600"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-sm text-gray-700">Industry</span>
+                    </div>
+                    <div
+                        class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg"
+                    >
+                        <svg
+                            class="w-5 h-5 text-blue-600"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-sm text-gray-700">Job Title</span>
+                    </div>
+                    <div
+                        class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg"
+                    >
+                        <svg
+                            class="w-5 h-5 text-blue-600"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-sm text-gray-700">Company Size</span>
+                    </div>
+                    <div
+                        class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg"
+                    >
+                        <svg
+                            class="w-5 h-5 text-blue-600"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-sm text-gray-700">Seniority</span>
+                    </div>
+                    <div
+                        class="flex items-center gap-2 p-3 border border-gray-200 rounded-lg"
+                    >
+                        <svg
+                            class="w-5 h-5 text-blue-600"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-sm text-gray-700">Skills</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section
+                class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-8 text-white"
+            >
+                <h2 class="text-2xl font-bold mb-3">Ready to Get Started?</h2>
+                <p class="mb-6 opacity-90">
+                    In a real platform, you would be able to create your first
+                    campaign in minutes and start reaching your target audience
+                    today.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <button
+                        class="px-6 py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition font-medium"
+                    >
+                        Create Campaign (Demo)
+                    </button>
+                    <a
+                        href="/"
+                        class="px-6 py-3 border-2 border-white text-white rounded-lg hover:bg-white hover:text-blue-600 transition font-medium"
+                    >
+                        Back to Home
+                    </a>
+                </div>
+            </section>
+
+            <!-- Footer Links -->
+            <footer class="mt-8 pt-6 border-t border-gray-200">
+                <p class="text-sm text-gray-600 mb-4">
+                    For more information about this demo project:
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a
+                        href="/about"
+                        class="text-blue-600 hover:underline text-sm">About</a
+                    >
+                    <a
+                        href="/help"
+                        class="text-blue-600 hover:underline text-sm"
+                        >Help Center</a
+                    >
+                    <a
+                        href="/privacy"
+                        class="text-blue-600 hover:underline text-sm"
+                        >Privacy Policy</a
+                    >
+                    <a
+                        href="/terms"
+                        class="text-blue-600 hover:underline text-sm"
+                        >Terms of Service</a
+                    >
+                </div>
+            </footer>
+        </article>
+    </main>
+</Layout>

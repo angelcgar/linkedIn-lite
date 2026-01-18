@@ -1,0 +1,215 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+---
+
+<Layout>
+    <Navbar />
+
+    <main class="max-w-4xl mx-auto px-4 py-12">
+        <article class="bg-white rounded-lg shadow-sm p-8">
+            <!-- Header -->
+            <header class="mb-8 pb-6 border-b border-gray-200">
+                <h1 class="text-4xl font-bold text-gray-900 mb-3">
+                    About LinkedIn Lite
+                </h1>
+                <p class="text-lg text-gray-600">
+                    A demo portfolio project showcasing modern web development
+                    practices
+                </p>
+            </header>
+
+            <!-- Content Sections -->
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+                    Our Mission
+                </h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    LinkedIn Lite is a portfolio demonstration project built to
+                    showcase frontend development skills and modern web
+                    architecture patterns. This application simulates core
+                    LinkedIn features in a lightweight, frontend-only
+                    implementation.
+                </p>
+                <p class="text-gray-700 leading-relaxed">
+                    While this is not a production application, it demonstrates
+                    real-world development practices including component
+                    architecture, state management, API design patterns, and
+                    responsive UI implementation.
+                </p>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+                    Technology Stack
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <h3 class="font-semibold text-gray-900 mb-2">
+                            Framework
+                        </h3>
+                        <p class="text-sm text-gray-600">
+                            Built with Astro for optimal performance and modern
+                            developer experience
+                        </p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <h3 class="font-semibold text-gray-900 mb-2">
+                            Styling
+                        </h3>
+                        <p class="text-sm text-gray-600">
+                            Tailwind CSS for rapid, utility-first styling with
+                            consistent design
+                        </p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <h3 class="font-semibold text-gray-900 mb-2">
+                            TypeScript
+                        </h3>
+                        <p class="text-sm text-gray-600">
+                            Type-safe development with comprehensive type
+                            definitions
+                        </p>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <h3 class="font-semibold text-gray-900 mb-2">
+                            Architecture
+                        </h3>
+                        <p class="text-sm text-gray-600">
+                            Clean separation of concerns with simulated API
+                            layer
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+                    Features
+                </h2>
+                <ul class="space-y-3">
+                    <li class="flex items-start gap-3">
+                        <svg
+                            class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700"
+                            >User profiles with experience and skills</span
+                        >
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg
+                            class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700"
+                            >News feed with post creation and interactions</span
+                        >
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg
+                            class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700"
+                            >Job search and application system</span
+                        >
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg
+                            class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700"
+                            >Messaging and networking features</span
+                        >
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg
+                            class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700"
+                            >Notifications and activity tracking</span
+                        >
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+                    Design Philosophy
+                </h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    This project emphasizes clean, maintainable code with a
+                    focus on user experience. Every component is designed to be
+                    responsive, accessible, and performant.
+                </p>
+                <p class="text-gray-700 leading-relaxed">
+                    The application demonstrates best practices in modern web
+                    development, including component reusability, type safety,
+                    and separation of concerns between presentation and data
+                    layers.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+                    Contact & Source
+                </h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    This project is part of a portfolio demonstrating frontend
+                    development capabilities. For more information or to view
+                    the source code, please visit the project repository or
+                    contact the developer.
+                </p>
+                <div class="flex gap-4">
+                    <a
+                        href="/"
+                        class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+                    >
+                        <svg
+                            class="w-5 h-5"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"
+                            ></path>
+                        </svg>
+                        Back to Home
+                    </a>
+                </div>
+            </section>
+        </article>
+    </main>
+</Layout>
