@@ -1,0 +1,119 @@
+---
+export const prerender = false;
+
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Post from "../../components/Post.astro";
+import Comments from "../../components/Comments.astro";
+import { getPostById, getCommentsByPost } from "../../lib/api/index.js";
+
+/**
+ * POST DETAIL PAGE (/posts/[id])
+ * Página de detalle del post que muestra el post completo
+ * y todos los comentarios asociados.
+ */
+
+// Obtener ID del post desde los parámetros de ruta
+const { id } = Astro.params;
+
+if (!id) {
+    return Astro.redirect("/");
+}
+
+// Obtener datos del post y comentarios mediante API simulada
+const postWithAuthor = await getPostById(id);
+
+if (!postWithAuthor) {
+    return Astro.redirect("/");
+}
+
+// Obtener todos los comentarios del post (sin límite)
+const comments = await getCommentsByPost(id);
+---
+
+<Layout>
+    <Navbar />
+
+    <main class="max-w-4xl mx-auto px-4 py-6">
+        <!-- Back Button -->
+        <div class="mb-4">
+            <a
+                href="/"
+                class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition"
+            >
+                <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to feed
+            </a>
+        </div>
+
+        <!-- Post Card -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+            <!-- Post Content (reutiliza componente Post pero sin margen) -->
+            <div class="post-detail">
+                <Post postWithAuthor={postWithAuthor} />
+            </div>
+
+            <!-- Comments Section -->
+            {
+                comments.length > 0 && (
+                    <div class="border-t border-gray-200">
+                        <div class="p-4">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                                Comments ({comments.length})
+                            </h2>
+                            <Comments
+                                comments={comments}
+                                postId={id}
+                                showAll={true}
+                            />
+                        </div>
+                    </div>
+                )
+            }
+
+            {
+                comments.length === 0 && (
+                    <div class="border-t border-gray-200 p-8 text-center">
+                        <svg
+                            class="w-12 h-12 mx-auto text-gray-300 mb-3"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                            />
+                        </svg>
+                        <p class="text-gray-600">No comments yet</p>
+                        <p class="text-sm text-gray-500 mt-1">
+                            Be the first to comment!
+                        </p>
+                    </div>
+                )
+            }
+        </div>
+    </main>
+</Layout>
+
+<style>
+    /* Remover margen inferior del post en vista detalle */
+    .post-detail :global(article) {
+        margin-bottom: 0;
+        border: none;
+        border-radius: 0;
+    }
+</style>

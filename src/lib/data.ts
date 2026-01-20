@@ -1,4 +1,4 @@
-import type { User, Post } from '../types/index.js';
+import type { User, Post, Comment } from '../types/index.js';
 
 /**
  * Mock user database
@@ -182,6 +182,286 @@ export const users: User[] = [
     isOnline: false,
     lastSeen: '6h ago',
   },
+  {
+    id: 'user-16',
+    name: 'Daniel Park',
+    title: 'Backend Engineer at Airbnb',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Daniel',
+    connections: 1234,
+    isCurrentUser: false,
+    isOnline: true,
+    lastSeen: 'Active now',
+  },
+  {
+    id: 'user-17',
+    name: 'Isabella Martinez',
+    title: 'Product Designer at Figma',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Isabella',
+    connections: 1567,
+    isCurrentUser: false,
+    isOnline: false,
+    lastSeen: '2h ago',
+  },
+  {
+    id: 'user-18',
+    name: 'Kevin Zhang',
+    title: 'Security Engineer at Cloudflare',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kevin',
+    connections: 891,
+    isCurrentUser: false,
+    isOnline: false,
+    lastSeen: '1d ago',
+  },
+  {
+    id: 'user-19',
+    name: 'Rachel Green',
+    title: 'Growth Marketing at Slack',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Rachel',
+    connections: 2103,
+    isCurrentUser: false,
+    isOnline: true,
+    lastSeen: 'Active now',
+  },
+  {
+    id: 'user-20',
+    name: 'Tom Wilson',
+    title: 'Engineering Manager at GitHub',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Tom',
+    connections: 1678,
+    isCurrentUser: false,
+    isOnline: false,
+    lastSeen: '3h ago',
+  },
+];
+
+/**
+ * Mock comments database
+ * In production, comments would be fetched from a real database/API
+ */
+export const comments: Comment[] = [
+  // Comments for post-1 (Sarah's minimalist UI post)
+  {
+    id: 'comment-1',
+    postId: 'post-1',
+    userId: 'user-1',
+    content: 'Love this approach! Minimalism is not about removing features, it\'s about removing friction. Well said!',
+    timestamp: '1h',
+    likes: 12,
+  },
+  {
+    id: 'comment-2',
+    postId: 'post-1',
+    userId: 'user-11',
+    content: 'At Notion we follow similar principles. The key is knowing what to hide and what to highlight.',
+    timestamp: '1h',
+    likes: 8,
+  },
+  {
+    id: 'comment-3',
+    postId: 'post-1',
+    userId: 'user-17',
+    content: 'Great insights! Would love to see some examples of your work.',
+    timestamp: '45m',
+    likes: 5,
+  },
+  {
+    id: 'comment-4',
+    postId: 'post-1',
+    userId: 'user-3',
+    content: 'This resonates so much. We just redesigned our dashboard using these exact principles.',
+    timestamp: '30m',
+    likes: 3,
+  },
+
+  // Comments for post-2 (Michael's team milestone)
+  {
+    id: 'comment-5',
+    postId: 'post-2',
+    userId: 'user-5',
+    content: 'Congrats to the team! Backend scalability is no joke. 🎉',
+    timestamp: '4h',
+    likes: 6,
+  },
+  {
+    id: 'comment-6',
+    postId: 'post-2',
+    userId: 'user-12',
+    content: 'Would love to hear more about your architecture decisions!',
+    timestamp: '3h',
+    likes: 4,
+  },
+
+  // Comments for post-3 (Emily's React Server Components article)
+  {
+    id: 'comment-7',
+    postId: 'post-3',
+    userId: 'user-10',
+    content: 'Just read it - excellent breakdown of the mental model shift required!',
+    timestamp: '20h',
+    likes: 15,
+  },
+  {
+    id: 'comment-8',
+    postId: 'post-3',
+    userId: 'user-3',
+    content: 'RSC is a game changer. We\'re migrating our app now and the performance gains are incredible.',
+    timestamp: '18h',
+    likes: 11,
+  },
+  {
+    id: 'comment-9',
+    postId: 'post-3',
+    userId: 'user-16',
+    content: 'Link? Can\'t find it in the comments 😅',
+    timestamp: '16h',
+    likes: 7,
+  },
+  {
+    id: 'comment-10',
+    postId: 'post-3',
+    userId: 'user-8',
+    content: 'Great timing. We\'re evaluating RSC for our next project at Amazon.',
+    timestamp: '12h',
+    likes: 9,
+  },
+
+  // Comments for post-4 (David's hiring post)
+  {
+    id: 'comment-11',
+    postId: 'post-4',
+    userId: 'user-17',
+    content: 'DM sent! This sounds like an amazing opportunity.',
+    timestamp: '1d',
+    likes: 8,
+  },
+  {
+    id: 'comment-12',
+    postId: 'post-4',
+    userId: 'user-2',
+    content: 'Do you have a formal job posting we can share?',
+    timestamp: '1d',
+    likes: 12,
+  },
+  {
+    id: 'comment-13',
+    postId: 'post-4',
+    userId: 'user-11',
+    content: 'What\'s the design team size currently?',
+    timestamp: '1d',
+    likes: 5,
+  },
+
+  // Comments for post-5 (Marcus on simplicity)
+  {
+    id: 'comment-14',
+    postId: 'post-5',
+    userId: 'user-4',
+    content: '100% agree. Complexity is easy, simplicity is hard.',
+    timestamp: '2h',
+    likes: 18,
+  },
+  {
+    id: 'comment-15',
+    postId: 'post-5',
+    userId: 'user-20',
+    content: 'This is the wisdom that only comes with experience. Well said!',
+    timestamp: '2h',
+    likes: 14,
+  },
+  {
+    id: 'comment-16',
+    postId: 'post-5',
+    userId: 'user-10',
+    content: 'Reminds me of the quote: "Simplicity is the ultimate sophistication"',
+    timestamp: '1h',
+    likes: 21,
+  },
+
+  // Comments for post-7 (James's open source project)
+  {
+    id: 'comment-17',
+    postId: 'post-7',
+    userId: 'user-1',
+    content: 'Just starred it! Love the accessibility-first approach.',
+    timestamp: '7h',
+    likes: 9,
+  },
+  {
+    id: 'comment-18',
+    postId: 'post-7',
+    userId: 'user-13',
+    content: 'This is fantastic! We need more accessible components in the ecosystem.',
+    timestamp: '6h',
+    likes: 12,
+  },
+  {
+    id: 'comment-19',
+    postId: 'post-7',
+    userId: 'user-17',
+    content: 'Any plans for React 19 support?',
+    timestamp: '5h',
+    likes: 6,
+  },
+  {
+    id: 'comment-20',
+    postId: 'post-7',
+    userId: 'user-5',
+    content: 'Going to try this in our next sprint. Documentation looks great!',
+    timestamp: '4h',
+    likes: 8,
+  },
+
+  // Comments for post-8 (Nina on design systems)
+  {
+    id: 'comment-21',
+    postId: 'post-8',
+    userId: 'user-2',
+    content: 'Yes! Design systems are about communication and shared understanding.',
+    timestamp: '11h',
+    likes: 16,
+  },
+  {
+    id: 'comment-22',
+    postId: 'post-8',
+    userId: 'user-17',
+    content: 'Would love a follow-up post on governance and versioning!',
+    timestamp: '10h',
+    likes: 13,
+  },
+  {
+    id: 'comment-23',
+    postId: 'post-8',
+    userId: 'user-1',
+    content: 'Notion\'s design system is incredible. Any resources you can share?',
+    timestamp: '9h',
+    likes: 19,
+  },
+
+  // Comments for post-11 (Ryan's Flutter vs React Native)
+  {
+    id: 'comment-24',
+    postId: 'post-11',
+    userId: 'user-10',
+    content: 'Been waiting for this comparison! What about performance?',
+    timestamp: '1d',
+    likes: 22,
+  },
+  {
+    id: 'comment-25',
+    postId: 'post-11',
+    userId: 'user-5',
+    content: 'Hot take: Both are great, choose based on your team\'s expertise.',
+    timestamp: '1d',
+    likes: 17,
+  },
+  {
+    id: 'comment-26',
+    postId: 'post-11',
+    userId: 'user-16',
+    content: 'How do they compare for complex animations?',
+    timestamp: '1d',
+    likes: 11,
+  },
 ];
 
 /**
@@ -196,7 +476,7 @@ export const posts: Post[] = [
       "Excited to share my latest project on minimalist interfaces. We focused on reducing cognitive load while maintaining functionality. What's your take on minimal UI? 🚀",
     timestamp: '2h',
     likes: 124,
-    comments: 18,
+    comments: 4,
     image: 'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=600&h=400&fit=crop',
   },
   {
@@ -206,7 +486,7 @@ export const posts: Post[] = [
       "Always proud of the team at TechFlow. We just hit a major milestone in our backend scalability project! Grateful for everyone's hard work.",
     timestamp: '5h',
     likes: 89,
-    comments: 4,
+    comments: 2,
     image: null,
   },
   {
@@ -216,7 +496,7 @@ export const posts: Post[] = [
       'Just published a new article about React Server Components and their impact on modern web architecture. Link in comments! 📝',
     timestamp: '1d',
     likes: 267,
-    comments: 32,
+    comments: 4,
     image: null,
   },
   {
@@ -226,7 +506,7 @@ export const posts: Post[] = [
       "Hiring! We're looking for a Senior Product Designer to join our team. Remote-friendly, competitive salary, and amazing benefits. DM me if interested! 💼",
     timestamp: '2d',
     likes: 421,
-    comments: 56,
+    comments: 3,
     image: null,
   },
   {
@@ -236,7 +516,7 @@ export const posts: Post[] = [
       'After 10 years in software architecture, I can confidently say that simplicity beats complexity every single time. Build systems that humans can understand and maintain.',
     timestamp: '3h',
     likes: 312,
-    comments: 45,
+    comments: 3,
     image: null,
   },
   {
@@ -256,7 +536,7 @@ export const posts: Post[] = [
       'Excited to announce that I just open-sourced my side project! A lightweight TypeScript library for building accessible components. Check it out on GitHub! 🎉',
     timestamp: '8h',
     likes: 456,
-    comments: 67,
+    comments: 4,
     image: null,
   },
   {
@@ -266,7 +546,7 @@ export const posts: Post[] = [
       'Design systems are not just component libraries. They are the language that connects product, design, and engineering. Here is how we approach it at Notion...',
     timestamp: '12h',
     likes: 534,
-    comments: 89,
+    comments: 3,
     image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=400&fit=crop',
   },
   {
@@ -296,7 +576,7 @@ export const posts: Post[] = [
       'Flutter vs React Native in 2024? I have built production apps with both. Here is my honest comparison and when to choose each...',
     timestamp: '2d',
     likes: 892,
-    comments: 156,
+    comments: 3,
     image: null,
   },
   {
@@ -338,5 +618,27 @@ export const posts: Post[] = [
     likes: 756,
     comments: 91,
     image: null,
+  },
+  {
+    id: 'post-16',
+    userId: 'user-16',
+    content:
+      'Completely agree with this! Simplicity is the ultimate sophistication. 💯',
+    timestamp: '2h',
+    likes: 45,
+    comments: 3,
+    image: null,
+    sharedPostId: 'post-5', // Compartiendo el post de user-8 sobre simplicidad
+  },
+  {
+    id: 'post-17',
+    userId: 'user-19',
+    content:
+      'This is exactly what we need in the industry right now. Great insights! 🙌',
+    timestamp: '4h',
+    likes: 67,
+    comments: 5,
+    image: null,
+    sharedPostId: 'post-3', // Compartiendo el post de user-5 sobre React Server Components
   },
 ];

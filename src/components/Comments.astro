@@ -1,0 +1,92 @@
+---
+import type { CommentWithAuthor } from "../types/index.js";
+
+interface Props {
+    comments: CommentWithAuthor[];
+    postId: string;
+    showAll?: boolean;
+}
+
+const { comments, postId, showAll = false } = Astro.props;
+
+// Mostrar solo 3 comentarios por defecto en el feed
+const displayComments = showAll ? comments : comments.slice(0, 3);
+const hasMoreComments = comments.length > 3 && !showAll;
+---
+
+<div class="px-4 pb-3">
+    {
+        displayComments.length > 0 && (
+            <div class="space-y-3">
+                {displayComments.map((commentWithAuthor) => (
+                    <div class="flex gap-2">
+                        <a href={`/users/${commentWithAuthor.author.id}`}>
+                            <img
+                                src={commentWithAuthor.author.avatar}
+                                alt={commentWithAuthor.author.name}
+                                class="w-8 h-8 rounded-full hover:opacity-90 transition flex-shrink-0"
+                            />
+                        </a>
+                        <div class="flex-1 min-w-0">
+                            <div class="bg-gray-50 rounded-lg px-3 py-2">
+                                <a
+                                    href={`/users/${commentWithAuthor.author.id}`}
+                                    class="hover:underline"
+                                >
+                                    <p class="font-semibold text-sm text-gray-900">
+                                        {commentWithAuthor.author.name}
+                                    </p>
+                                </a>
+                                <p class="text-xs text-gray-600 mb-1">
+                                    {commentWithAuthor.author.title}
+                                </p>
+                                <p class="text-sm text-gray-900 leading-relaxed">
+                                    {commentWithAuthor.comment.content}
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-3 mt-1 px-2 text-xs text-gray-600">
+                                <button class="hover:underline font-semibold">
+                                    Like
+                                </button>
+                                <span>·</span>
+                                <button class="hover:underline">Reply</button>
+                                <span>·</span>
+                                <span>
+                                    {commentWithAuthor.comment.timestamp}
+                                </span>
+                                {commentWithAuthor.comment.likes > 0 && (
+                                    <>
+                                        <span>·</span>
+                                        <span class="flex items-center gap-1">
+                                            <svg
+                                                class="w-3 h-3 text-blue-600"
+                                                fill="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                                            </svg>
+                                            {commentWithAuthor.comment.likes}
+                                        </span>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        )
+    }
+
+    {
+        hasMoreComments && (
+            <div class="mt-3">
+                <a
+                    href={`/posts/${postId}`}
+                    class="text-sm font-semibold text-gray-600 hover:text-gray-900 transition"
+                >
+                    View all {comments.length} comments
+                </a>
+            </div>
+        )
+    }
+</div>

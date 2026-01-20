@@ -1,5 +1,5 @@
-import type { User, Post, ConnectionSuggestion, PostWithAuthor, ConversationWithUser, Message, Job, Invitation, NetworkStats, Notification, SavedJob, SavedPost, PremiumFeature } from '@/types/index.js';
-import { users as usersData, posts as postsData } from '../data.js';
+import type { User, Post, ConnectionSuggestion, PostWithAuthor, ConversationWithUser, Message, Job, Invitation, NetworkStats, Notification, SavedJob, SavedPost, PremiumFeature, Comment, CommentWithAuthor } from '@/types/index.js';
+import { users as usersData, posts as postsData, comments as commentsData } from '../data.js';
 import { conversations as conversationsData, messages as messagesData } from '../messaging-data.js';
 import { jobs as jobsData } from '../jobs-data.js';
 import { invitations as invitationsData, suggestedUsers as suggestedUsersData, networkStats as networkStatsData } from '../network-data.js';
@@ -61,9 +61,27 @@ export async function getPosts(query?: string): Promise<PostWithAuthor[]> {
     if (!author) {
       throw new Error(`Author not found for post ${post.id}`);
     }
+
+    let sharedPost: PostWithAuthor | undefined = undefined;
+
+    // Si el post es un share, obtener el post original
+    if (post.sharedPostId) {
+      const originalPost = postsData.find((p) => p.id === post.sharedPostId);
+      if (originalPost) {
+        const originalAuthor = usersData.find((u) => u.id === originalPost.userId);
+        if (originalAuthor) {
+          sharedPost = {
+            post: originalPost,
+            author: originalAuthor,
+          };
+        }
+      }
+    }
+
     return {
       post,
       author,
+      sharedPost,
     };
   });
 
@@ -73,6 +91,70 @@ export async function getPosts(query?: string): Promise<PostWithAuthor[]> {
   }
 
   return simulateApiCall(enrichedPosts);
+}
+
+/**
+ * Get a specific post by ID with enriched data
+ * In a real app, this would call: GET /api/posts/{postId}
+ */
+export async function getPostById(postId: string): Promise<PostWithAuthor | null> {
+  const post = postsData.find((p) => p.id === postId);
+  if (!post) {
+    return simulateApiCall(null);
+  }
+
+  const author = usersData.find((u) => u.id === post.userId);
+  if (!author) {
+    return simulateApiCall(null);
+  }
+
+  let sharedPost: PostWithAuthor | undefined = undefined;
+
+  // Si el post es un share, obtener el post original
+  if (post.sharedPostId) {
+    const originalPost = postsData.find((p) => p.id === post.sharedPostId);
+    if (originalPost) {
+      const originalAuthor = usersData.find((u) => u.id === originalPost.userId);
+      if (originalAuthor) {
+        sharedPost = {
+          post: originalPost,
+          author: originalAuthor,
+        };
+      }
+    }
+  }
+
+  return simulateApiCall({
+    post,
+    author,
+    sharedPost,
+  });
+}
+
+/**
+ * Get all comments for a specific post
+ * In a real app, this would call: GET /api/posts/{postId}/comments
+ */
+export async function getCommentsByPost(postId: string, limit?: number): Promise<CommentWithAuthor[]> {
+  let postComments = commentsData.filter((c) => c.postId === postId);
+
+  // Aplicar límite si se especifica
+  if (limit) {
+    postComments = postComments.slice(0, limit);
+  }
+
+  const enrichedComments: CommentWithAuthor[] = postComments.map((comment) => {
+    const author = usersData.find((u) => u.id === comment.userId);
+    if (!author) {
+      throw new Error(`Author not found for comment ${comment.id}`);
+    }
+    return {
+      comment,
+      author,
+    };
+  });
+
+  return simulateApiCall(enrichedComments);
 }
 
 /**

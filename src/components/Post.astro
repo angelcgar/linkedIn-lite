@@ -1,5 +1,7 @@
 ---
 import type { Post, User, PostWithAuthor } from "../types/index.js";
+import Comments from "./Comments.astro";
+import { getCommentsByPost } from "../lib/api";
 
 interface Props {
     post?: Post;
@@ -18,6 +20,9 @@ if (!post || !author) {
         "Post component requires either (post + author) or postWithAuthor",
     );
 }
+
+// Obtener comentarios (máximo 3 para el feed)
+const comments = await getCommentsByPost(post.id, 3);
 ---
 
 <article class="bg-white rounded-lg border border-gray-200 mb-4">
@@ -103,9 +108,49 @@ if (!post || !author) {
     </div>
 
     <!-- Post Content -->
-    <div class="px-4 pb-3">
+    <a href={`/posts/${post.id}`} class="block px-4 pb-3 hover:bg-gray-50 transition cursor-pointer">
         <p class="text-gray-900 text-sm leading-relaxed">{post.content}</p>
-    </div>
+    </a>
+
+    <!-- Shared Post (if this post shares another post) -->
+    {
+        postWithAuthor?.sharedPost && (
+            <div class="mx-4 mb-3 border border-gray-300 rounded-lg overflow-hidden hover:bg-gray-50 transition">
+                <a href={`/posts/${postWithAuthor.sharedPost.post.id}`} class="block">
+                    <!-- Shared Post Header -->
+                    <div class="p-3 flex items-start gap-2">
+                        <img
+                            src={postWithAuthor.sharedPost.author.avatar}
+                            alt={postWithAuthor.sharedPost.author.name}
+                            class="w-10 h-10 rounded-full"
+                        />
+                        <div class="flex-1 min-w-0">
+                            <h3 class="text-sm font-semibold text-gray-900 truncate">
+                                {postWithAuthor.sharedPost.author.name}
+                            </h3>
+                            <p class="text-xs text-gray-600 truncate">
+                                {postWithAuthor.sharedPost.author.title}
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Shared Post Content -->
+                    <div class="px-3 pb-3">
+                        <p class="text-sm text-gray-700 line-clamp-3">
+                            {postWithAuthor.sharedPost.post.content}
+                        </p>
+                    </div>
+                    <!-- Shared Post Image (if exists) -->
+                    {postWithAuthor.sharedPost.post.image && (
+                        <img
+                            src={postWithAuthor.sharedPost.post.image}
+                            alt="Shared post content"
+                            class="w-full"
+                        />
+                    )}
+                </a>
+            </div>
+        )
+    }
 
     <!-- Post Image (if exists) -->
     {
@@ -119,6 +164,9 @@ if (!post || !author) {
             </div>
         )
     }
+
+    <!-- Comments Section -->
+    {comments.length > 0 && <Comments comments={comments} postId={post.id} />}
 
     <!-- Engagement Stats -->
     <div
@@ -268,3 +316,12 @@ if (!post || !author) {
         });
     });
 </script>
+
+<style>
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>

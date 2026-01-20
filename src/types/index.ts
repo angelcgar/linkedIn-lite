@@ -39,11 +39,27 @@ export interface Post {
   likes: number;
   comments: number;
   image?: string | null;
+  sharedPostId?: string; // ID del post original si este es un share
+}
+
+export interface Comment {
+  id: string;
+  postId: string;
+  userId: string;
+  content: string;
+  timestamp: string;
+  likes: number;
+}
+
+export interface CommentWithAuthor {
+  comment: Comment;
+  author: User;
 }
 
 export interface PostWithAuthor {
   post: Post;
   author: User;
+  sharedPost?: PostWithAuthor; // Post original si este es un share
 }
 
 export interface ConnectionSuggestion {
