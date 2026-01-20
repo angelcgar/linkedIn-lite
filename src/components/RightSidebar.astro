@@ -20,15 +20,22 @@ const { suggestions } = Astro.props;
                 suggestions.map((person) => (
                     <div class="p-4 hover:bg-gray-50 transition">
                         <div class="flex items-start gap-3">
-                            <img
-                                src={person.avatar}
-                                alt={person.name}
-                                class="w-12 h-12 rounded-full"
-                            />
+                            <a href={`/users/${person.id}`}>
+                                <img
+                                    src={person.avatar}
+                                    alt={person.name}
+                                    class="w-12 h-12 rounded-full hover:opacity-90 transition"
+                                />
+                            </a>
                             <div class="flex-1 min-w-0">
-                                <h3 class="font-semibold text-sm text-gray-900 truncate">
-                                    {person.name}
-                                </h3>
+                                <a
+                                    href={`/users/${person.id}`}
+                                    class="hover:underline"
+                                >
+                                    <h3 class="font-semibold text-sm text-gray-900 truncate">
+                                        {person.name}
+                                    </h3>
+                                </a>
                                 <p class="text-xs text-gray-600 mt-1 line-clamp-2">
                                     {person.title}
                                 </p>

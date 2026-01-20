@@ -1,0 +1,227 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Post from "../../components/Post.astro";
+import { getUserById, getPostsByUser } from "../../lib/api/index.js";
+
+/**
+ * USER PROFILE PAGE (/users/[id])
+ * Página de perfil dinámico que muestra información completa del usuario
+ * y sus posts recientes. El ID se obtiene de la ruta dinámica.
+ */
+
+// Obtener ID del usuario desde los parámetros de ruta
+const { id } = Astro.params;
+
+if (!id) {
+    return Astro.redirect("/");
+}
+
+// Obtener datos del usuario mediante API simulada
+const user = await getUserById(id);
+
+if (!user) {
+    return Astro.redirect("/");
+}
+
+// Obtener posts del usuario
+const userPosts = await getPostsByUser(id);
+---
+
+<Layout>
+    <Navbar />
+
+    <main class="max-w-5xl mx-auto px-4 py-6">
+        <!-- Profile Header Card -->
+        <div
+            class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 overflow-hidden"
+        >
+            <!-- Cover Image -->
+            <div class="h-32 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+
+            <!-- Profile Info -->
+            <div class="px-6 pb-6">
+                <div class="flex items-start gap-6 -mt-16 mb-4">
+                    <!-- Avatar -->
+                    <img
+                        src={user.avatar}
+                        alt={user.name}
+                        class="w-32 h-32 rounded-full border-4 border-white bg-white"
+                    />
+
+                    <!-- Actions (for demo purposes) -->
+                    <div class="mt-16 ml-auto flex gap-2">
+                        {
+                            !user.isCurrentUser && (
+                                <>
+                                    <button class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition">
+                                        Connect
+                                    </button>
+                                    <button class="px-6 py-2 border border-gray-300 text-gray-700 font-semibold rounded-full hover:bg-gray-50 transition">
+                                        Message
+                                    </button>
+                                </>
+                            )
+                        }
+                        {
+                            user.isCurrentUser && (
+                                <button class="px-6 py-2 border border-gray-300 text-gray-700 font-semibold rounded-full hover:bg-gray-50 transition">
+                                    Edit profile
+                                </button>
+                            )
+                        }
+                    </div>
+                </div>
+
+                <!-- Name and Title -->
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">
+                        {user.name}
+                    </h1>
+                    <p class="text-lg text-gray-700 mt-1">{user.title}</p>
+                    {
+                        user.location && (
+                            <p class="text-sm text-gray-600 mt-2 flex items-center gap-1">
+                                <svg
+                                    class="w-4 h-4"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                                </svg>
+                                {user.location}
+                            </p>
+                        )
+                    }
+                    <p class="text-sm text-blue-600 mt-1">
+                        {user.connections} connections
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 gap-6">
+            <!-- Left Column -->
+            <div class="col-span-8">
+                <!-- About Section -->
+                {
+                    user.about && (
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                            <h2 class="text-xl font-semibold text-gray-900 mb-3">
+                                About
+                            </h2>
+                            <p class="text-gray-700 leading-relaxed">
+                                {user.about}
+                            </p>
+                        </div>
+                    )
+                }
+
+                <!-- Experience Section -->
+                {
+                    user.experience && user.experience.length > 0 && (
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                            <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                                Experience
+                            </h2>
+                            <div class="space-y-6">
+                                {user.experience.map((exp) => (
+                                    <div class="flex gap-3">
+                                        {exp.logo && (
+                                            <img
+                                                src={exp.logo}
+                                                alt={exp.company}
+                                                class="w-12 h-12 rounded"
+                                            />
+                                        )}
+                                        <div class="flex-1">
+                                            <h3 class="font-semibold text-gray-900">
+                                                {exp.title}
+                                            </h3>
+                                            <p class="text-sm text-gray-700">
+                                                {exp.company}
+                                            </p>
+                                            <p class="text-sm text-gray-600 mt-1">
+                                                {exp.startDate} -{" "}
+                                                {exp.endDate || "Present"} ·{" "}
+                                                {exp.duration}
+                                            </p>
+                                            {exp.location && (
+                                                <p class="text-sm text-gray-600">
+                                                    {exp.location}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )
+                }
+
+                <!-- Activity/Posts Section -->
+                {
+                    userPosts.length > 0 && (
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                                Activity
+                            </h2>
+                            <div class="space-y-4">
+                                {userPosts.slice(0, 5).map((postWithAuthor) => (
+                                    <Post postWithAuthor={postWithAuthor} />
+                                ))}
+                            </div>
+                        </div>
+                    )
+                }
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-span-4">
+                <!-- Skills Section -->
+                {
+                    user.skills && user.skills.length > 0 && (
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                            <h2 class="text-xl font-semibold text-gray-900 mb-3">
+                                Skills
+                            </h2>
+                            <div class="flex flex-wrap gap-2">
+                                {user.skills.map((skill) => (
+                                    <span class="px-3 py-1.5 bg-gray-100 text-gray-700 text-sm rounded-full">
+                                        {skill}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    )
+                }
+
+                <!-- Contact Info (if available) -->
+                {
+                    user.email && (
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h2 class="text-xl font-semibold text-gray-900 mb-3">
+                                Contact
+                            </h2>
+                            <div class="space-y-2">
+                                <a
+                                    href={`mailto:${user.email}`}
+                                    class="flex items-center gap-2 text-sm text-blue-600 hover:underline"
+                                >
+                                    <svg
+                                        class="w-4 h-4"
+                                        fill="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                                    </svg>
+                                    {user.email}
+                                </a>
+                            </div>
+                        </div>
+                    )
+                }
+            </div>
+        </div>
+    </main>
+</Layout>

@@ -84,13 +84,44 @@ const { currentUser } = Astro.props;
                     placeholder="What do you want to talk about?"
                     maxlength="3000"></textarea>
 
+                <!-- Image Preview Area -->
+                <div id="image-preview-container" class="hidden px-3 pb-3">
+                    <div class="relative">
+                        <img
+                            id="image-preview"
+                            src=""
+                            alt="Preview"
+                            class="w-full rounded-lg"
+                        />
+                        <button
+                            type="button"
+                            id="remove-image-btn"
+                            class="absolute top-2 right-2 bg-white hover:bg-gray-100 rounded-full p-2 shadow-md transition"
+                        >
+                            <svg class="w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hidden file input para selección de imagen -->
+                <input
+                    type="file"
+                    id="image-input"
+                    accept="image/*"
+                    class="hidden"
+                />
+
                 <!-- Action Buttons Row -->
                 <div
                     class="flex items-center justify-between py-3 border-t border-gray-200"
                 >
                     <div class="flex items-center gap-2">
+                        <!-- Botón para agregar imagen -->
                         <button
                             type="button"
+                            id="add-image-btn"
                             class="p-2 hover:bg-gray-100 rounded transition"
                             title="Add photo"
                         >
@@ -212,6 +243,16 @@ const { currentUser } = Astro.props;
         "create-post-form",
     ) as HTMLFormElement;
 
+    // Referencias para manejo de imagen
+    const addImageBtn = document.getElementById("add-image-btn");
+    const imageInput = document.getElementById("image-input") as HTMLInputElement;
+    const imagePreviewContainer = document.getElementById("image-preview-container");
+    const imagePreview = document.getElementById("image-preview") as HTMLImageElement;
+    const removeImageBtn = document.getElementById("remove-image-btn");
+    
+    // Estado local de la imagen
+    let selectedImageDataUrl: string | null = null;
+
     // Abrir modal
     openModalBtn?.addEventListener("click", () => {
         modal?.classList.remove("hidden");
@@ -224,6 +265,9 @@ const { currentUser } = Astro.props;
         modal?.classList.add("hidden");
         modal?.classList.remove("flex");
         postContent.value = "";
+        selectedImageDataUrl = null;
+        imagePreviewContainer?.classList.add("hidden");
+        imageInput.value = "";
         postSubmitBtn.disabled = true;
     };
 
@@ -232,11 +276,43 @@ const { currentUser } = Astro.props;
         if (e.target === modal) closeModal();
     });
 
-    // Habilitar/deshabilitar botón según contenido
-    postContent?.addEventListener("input", () => {
-        const hasContent = postContent.value.trim().length > 0;
-        postSubmitBtn.disabled = !hasContent;
+    // Manejar click en botón de agregar imagen
+    addImageBtn?.addEventListener("click", () => {
+        imageInput?.click();
     });
+
+    // Manejar selección de imagen
+    imageInput?.addEventListener("change", (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (file && file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                selectedImageDataUrl = event.target?.result as string;
+                imagePreview.src = selectedImageDataUrl;
+                imagePreviewContainer?.classList.remove("hidden");
+                updateSubmitButton();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Manejar eliminación de imagen
+    removeImageBtn?.addEventListener("click", () => {
+        selectedImageDataUrl = null;
+        imagePreviewContainer?.classList.add("hidden");
+        imageInput.value = "";
+        updateSubmitButton();
+    });
+
+    // Actualizar estado del botón submit
+    const updateSubmitButton = () => {
+        const hasContent = postContent.value.trim().length > 0;
+        const hasImage = selectedImageDataUrl !== null;
+        postSubmitBtn.disabled = !(hasContent || hasImage);
+    };
+
+    // Habilitar/deshabilitar botón según contenido
+    postContent?.addEventListener("input", updateSubmitButton);
 
     // Detectar Ctrl+Enter para enviar post
     postContent?.addEventListener("keydown", (e) => {
@@ -273,21 +349,21 @@ const { currentUser } = Astro.props;
         e.preventDefault();
 
         const content = postContent.value.trim();
-        if (!content) return;
+        if (!content && !selectedImageDataUrl) return;
 
         // Deshabilitar botón durante el envío
         postSubmitBtn.disabled = true;
         postSubmitBtn.textContent = "Posting...";
 
-        // Crear nuevo post (optimistic UI)
+        // Crear nuevo post (optimistic UI) con imagen si existe
         const newPost = {
             id: `post-${Date.now()}`,
             userId: "current-user",
-            content: content,
+            content: content || "", // Permitir posts solo con imagen
             timestamp: "Just now",
             likes: 0,
             comments: 0,
-            image: null,
+            image: selectedImageDataUrl, // Guardar la imagen en el post
         };
 
         // Datos del usuario actual (del atributo data del botón)
@@ -304,6 +380,7 @@ const { currentUser } = Astro.props;
             if (postsContainer) {
                 postsContainer.insertAdjacentHTML("afterbegin", postHTML);
                 attachLikeHandlers();
+                attachPostMenuHandlers();
             }
 
             // Simular llamada al backend
@@ -329,31 +406,65 @@ const { currentUser } = Astro.props;
 
     // Función para crear HTML del post
     function createPostElement(post: any, author: any): string {
+        const imageHTML = post.image
+            ? `<div class="px-4 pb-3">
+                    <img src="${post.image}" alt="Post content" class="w-full rounded-lg" />
+                </div>`
+            : "";
+
         return `
 			<article class="bg-white rounded-lg border border-gray-200 mb-4 animate-fade-in">
 				<div class="p-4 flex items-start justify-between">
 					<div class="flex items-start gap-3">
-						<img
-							src="${author.avatar}"
-							alt="${author.name}"
-							class="w-12 h-12 rounded-full"
-						/>
+						<a href="/users/${author.id}">
+							<img
+								src="${author.avatar}"
+								alt="${author.name}"
+								class="w-12 h-12 rounded-full hover:opacity-90 transition"
+							/>
+						</a>
 						<div>
-							<h3 class="font-semibold text-gray-900">${author.name}</h3>
+							<a href="/users/${author.id}" class="hover:underline">
+								<h3 class="font-semibold text-gray-900">${author.name}</h3>
+							</a>
 							<p class="text-xs text-gray-600">${author.title}</p>
 							<p class="text-xs text-gray-500 mt-0.5">${post.timestamp}</p>
 						</div>
 					</div>
-					<button class="text-gray-600 hover:bg-gray-100 rounded-full p-2 transition">
-						<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-							<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
-						</svg>
-					</button>
+					<div class="relative">
+						<button class="post-menu-btn text-gray-600 hover:bg-gray-100 rounded-full p-2 transition" data-post-id="${post.id}">
+							<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+								<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+							</svg>
+						</button>
+						<div class="post-dropdown hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-10" data-post-id="${post.id}">
+							<button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition flex items-center gap-2">
+								<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+									<path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+								</svg>
+								Save post
+							</button>
+							<button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition flex items-center gap-2">
+								<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+									<path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+								</svg>
+								Copy link
+							</button>
+							<button class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition flex items-center gap-2">
+								<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+									<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+								</svg>
+								Report post
+							</button>
+						</div>
+					</div>
 				</div>
 
-				<div class="px-4 pb-3">
+				${post.content ? `<div class="px-4 pb-3">
 					<p class="text-gray-900 text-sm leading-relaxed">${post.content}</p>
-				</div>
+				</div>` : ''}
+
+				${imageHTML}
 
 				<div class="px-4 py-2 flex items-center justify-between text-xs text-gray-600 border-t border-gray-200">
 					<button class="hover:underline">
@@ -418,6 +529,42 @@ const { currentUser } = Astro.props;
                     this.dataset.likes = (currentLikes + 1).toString();
                 }
             });
+        });
+    }
+
+    // Re-aplicar event listeners para el menú dropdown de posts
+    function attachPostMenuHandlers() {
+        const menuButtons = document.querySelectorAll(".post-menu-btn");
+        
+        menuButtons.forEach((button) => {
+            const btn = button as HTMLButtonElement;
+            const postId = btn.dataset.postId;
+            const dropdown = document.querySelector(
+                `.post-dropdown[data-post-id="${postId}"]`
+            ) as HTMLElement;
+
+            if (dropdown) {
+                // Remover listeners previos
+                const newBtn = btn.cloneNode(true) as HTMLButtonElement;
+                btn.parentNode?.replaceChild(newBtn, btn);
+
+                // Toggle dropdown al hacer click en el botón
+                newBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    // Cerrar otros dropdowns abiertos
+                    document.querySelectorAll(".post-dropdown").forEach((d) => {
+                        if (d !== dropdown) d.classList.add("hidden");
+                    });
+                    dropdown.classList.toggle("hidden");
+                });
+
+                // Cerrar dropdown al hacer click fuera
+                document.addEventListener("click", (e) => {
+                    if (!dropdown.contains(e.target as Node) && e.target !== newBtn) {
+                        dropdown.classList.add("hidden");
+                    }
+                });
+            }
         });
     }
 </script>
