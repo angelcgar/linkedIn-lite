@@ -1,9 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
-import ProfileSidebar from "../components/ProfileSidebar.astro";
+import ProfileCard from "../components/ProfileCard.astro";
+import ExperienceCard from "../components/ExperienceCard.astro";
 import RightSidebar from "../components/RightSidebar.astro";
-import Post from "../components/Post.astro";
 import CreatePostModal from "../components/CreatePostModal.astro";
 import SkeletonPost from "../components/SkeletonPost.astro";
 
@@ -35,17 +35,18 @@ if (!currentUser) {
 	<Navbar />
 
 	<main class="max-w-7xl mx-auto px-4 py-6">
-		<div class="grid grid-cols-12 gap-6">
-			<!-- Left Sidebar -->
-			<div class="col-span-3">
-				<ProfileSidebar user={currentUser} />
+		<div class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
+			<!-- Left Sidebar - Hidden on mobile, visible on desktop -->
+			<div class="hidden lg:block lg:col-span-3 space-y-4">
+				<ProfileCard user={currentUser} />
+				<ExperienceCard />
 			</div>
 
 			<!-- Main Feed -->
-			<div class="col-span-6">
+			<div class="lg:col-span-6">
 				<!-- Create Post Box -->
 				<div
-					class="bg-white rounded-lg border border-gray-200 p-4 mb-4"
+					class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-4"
 				>
 					<div class="flex items-center gap-3">
 						<img
@@ -56,17 +57,17 @@ if (!currentUser) {
 						<button
 							id="open-create-post-modal"
 							data-user={JSON.stringify(currentUser)}
-							class="flex-1 text-left px-4 py-3 border border-gray-300 rounded-full text-gray-600 hover:bg-gray-50 transition"
+							class="flex-1 text-left px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-full text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
 						>
 							Start a post
 						</button>
 					</div>
 					<div
-						class="flex items-center justify-around mt-3 pt-3 border-t border-gray-200"
+						class="flex items-center justify-around mt-3 pt-3 border-t border-gray-200 dark:border-gray-700"
 					>
 						<button
 							id="open-create-post-modal-photo"
-							class="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded transition"
+							class="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded transition"
 						>
 							<svg
 								class="w-5 h-5 text-blue-500"
@@ -81,7 +82,7 @@ if (!currentUser) {
 						</button>
 						<button
 							id="open-create-post-modal-article"
-							class="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded transition"
+							class="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded transition"
 						>
 							<svg
 								class="w-5 h-5 text-green-500"
@@ -97,21 +98,7 @@ if (!currentUser) {
 					</div>
 				</div>
 
-				<!-- Feed Sort Selector -->
-				<div class="bg-white rounded-lg border border-gray-200 p-4 mb-4">
-					<div class="flex items-center justify-between">
-						<label for="feed-sort-select" class="text-sm font-semibold text-gray-700">
-							Ordenar por:
-						</label>
-						<select
-							id="feed-sort-select"
-							class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition cursor-pointer"
-						>
-							<option value="recent">Más recientes</option>
-							<option value="popular">Más populares</option>
-						</select>
-					</div>
-				</div>
+
 
 				<!-- Posts Feed -->
 				<div class="posts-feed">
@@ -125,8 +112,8 @@ if (!currentUser) {
 				</div>
 			</div>
 
-			<!-- Right Sidebar -->
-			<div class="col-span-3">
+			<!-- Right Sidebar - Hidden on mobile and tablet, visible on desktop -->
+			<div class="hidden lg:block lg:col-span-3">
 				<RightSidebar suggestions={suggestions} />
 			</div>
 		</div>

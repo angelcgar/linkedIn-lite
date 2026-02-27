@@ -1,0 +1,15 @@
+---
+---
+
+<div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+  <div id="experience-container"></div>
+</div>
+
+<script>
+  import { renderExperience } from '../lib/profile/profile.js';
+
+  const experienceContainer = document.getElementById('experience-container');
+  if (experienceContainer) {
+    renderExperience(experienceContainer);
+  }
+</script>

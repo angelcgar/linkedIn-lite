@@ -1,0 +1,69 @@
+---
+import type { User } from "../types/index.js";
+
+interface Props {
+  user: User;
+}
+
+const { user } = Astro.props;
+---
+
+<div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+  <div class="h-16 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+  
+  <div class="px-4 pb-4">
+    <div class="flex flex-col items-center -mt-12">
+      <img
+        src={user.avatar}
+        alt={user.name}
+        class="w-24 h-24 rounded-full border-4 border-white dark:border-gray-900"
+      />
+      <h2 class="mt-3 text-xl font-bold text-gray-900 dark:text-white">{user.name}</h2>
+      <p class="text-sm text-gray-600 dark:text-gray-400">{user.title}</p>
+      {user.location && (
+        <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">{user.location}</p>
+      )}
+    </div>
+
+    <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+      <div class="flex justify-between text-sm">
+        <div>
+          <p class="text-gray-500 dark:text-gray-400">Conexiones</p>
+          <p class="font-semibold text-gray-900 dark:text-white">{user.connections}</p>
+        </div>
+        <div class="text-right">
+          <p class="text-gray-500 dark:text-gray-400">Perfil visto</p>
+          <p class="font-semibold text-gray-900 dark:text-white">124</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="bio-container" class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700"></div>
+    
+    <div id="skills-container" class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700"></div>
+  </div>
+</div>
+
+<script>
+  import { initializeProfile } from '../lib/profile/storageService.js';
+  import { renderBio, renderSkills } from '../lib/profile/profile.js';
+  import { users } from '../lib/data';
+
+  const currentUser = users.find(u => u.isCurrentUser);
+  
+  if (currentUser) {
+    const defaultProfile = {
+      bio: currentUser.about || 'Passionate about creating amazing digital experiences.',
+      skills: currentUser.skills || ['JavaScript', 'TypeScript', 'React', 'Node.js'],
+      experience: currentUser.experience || []
+    };
+
+    initializeProfile(defaultProfile);
+
+    const bioContainer = document.getElementById('bio-container');
+    const skillsContainer = document.getElementById('skills-container');
+
+    if (bioContainer) renderBio(bioContainer);
+    if (skillsContainer) renderSkills(skillsContainer);
+  }
+</script>
