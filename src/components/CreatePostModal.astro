@@ -98,8 +98,14 @@ const { currentUser } = Astro.props;
                             id="remove-image-btn"
                             class="absolute top-2 right-2 bg-white hover:bg-gray-100 rounded-full p-2 shadow-md transition"
                         >
-                            <svg class="w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                            <svg
+                                class="w-5 h-5 text-gray-700"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                                ></path>
                             </svg>
                         </button>
                     </div>
@@ -216,10 +222,31 @@ const { currentUser } = Astro.props;
                         <button
                             type="submit"
                             id="post-submit-btn"
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-full transition disabled:bg-gray-300 disabled:cursor-not-allowed"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-full transition disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2 min-w-[100px] justify-center"
                             disabled
                         >
-                            Post
+                            <span id="post-submit-spinner" class="hidden">
+                                <svg
+                                    class="animate-spin h-4 w-4 text-white"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <circle
+                                        class="opacity-25"
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path
+                                        class="opacity-75"
+                                        fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                    ></path>
+                                </svg>
+                            </span>
+                            <span id="post-submit-text">Post</span>
                         </button>
                     </div>
                 </div>
@@ -229,6 +256,16 @@ const { currentUser } = Astro.props;
 </div>
 
 <script>
+    import {
+        createPost,
+        initializeStorageWithData,
+    } from "../services/storageService";
+    import { attachLikeHandlers } from "../lib/clientInit";
+    import { posts as postsData } from "../lib/data";
+
+    // Inicializar storage con datos por defecto
+    initializeStorageWithData(postsData);
+
     // Referencias del DOM
     const modal = document.getElementById("create-post-modal");
     const openModalBtn = document.getElementById("open-create-post-modal");
@@ -239,17 +276,25 @@ const { currentUser } = Astro.props;
     const postSubmitBtn = document.getElementById(
         "post-submit-btn",
     ) as HTMLButtonElement;
+    const postSubmitSpinner = document.getElementById("post-submit-spinner");
+    const postSubmitText = document.getElementById("post-submit-text");
     const postForm = document.getElementById(
         "create-post-form",
     ) as HTMLFormElement;
 
     // Referencias para manejo de imagen
     const addImageBtn = document.getElementById("add-image-btn");
-    const imageInput = document.getElementById("image-input") as HTMLInputElement;
-    const imagePreviewContainer = document.getElementById("image-preview-container");
-    const imagePreview = document.getElementById("image-preview") as HTMLImageElement;
+    const imageInput = document.getElementById(
+        "image-input",
+    ) as HTMLInputElement;
+    const imagePreviewContainer = document.getElementById(
+        "image-preview-container",
+    );
+    const imagePreview = document.getElementById(
+        "image-preview",
+    ) as HTMLImageElement;
     const removeImageBtn = document.getElementById("remove-image-btn");
-    
+
     // Estado local de la imagen
     let selectedImageDataUrl: string | null = null;
 
@@ -324,24 +369,17 @@ const { currentUser } = Astro.props;
         }
     });
 
-    // Simular respuesta del backend
-    async function simulateBackendPostCreation(
-        postData: any,
-    ): Promise<boolean> {
-        // En una app real, esto sería:
-        // const response = await fetch('/api/posts', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(postData)
-        // });
-        // return response.ok;
-
-        // Simulación: siempre retorna true después de un delay
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(true);
-            }, 300);
-        });
+    // Mostrar/ocultar spinner en el botón
+    function setButtonLoading(loading: boolean) {
+        if (loading) {
+            postSubmitBtn.disabled = true;
+            postSubmitSpinner?.classList.remove("hidden");
+            if (postSubmitText) postSubmitText.textContent = "Posting...";
+        } else {
+            postSubmitBtn.disabled = false;
+            postSubmitSpinner?.classList.add("hidden");
+            if (postSubmitText) postSubmitText.textContent = "Post";
+        }
     }
 
     // Manejar envío del formulario
@@ -351,28 +389,32 @@ const { currentUser } = Astro.props;
         const content = postContent.value.trim();
         if (!content && !selectedImageDataUrl) return;
 
-        // Deshabilitar botón durante el envío
-        postSubmitBtn.disabled = true;
-        postSubmitBtn.textContent = "Posting...";
+        // Mostrar loading state
+        setButtonLoading(true);
 
-        // Crear nuevo post (optimistic UI) con imagen si existe
-        const newPost = {
-            id: `post-${Date.now()}`,
-            userId: "current-user",
-            content: content || "", // Permitir posts solo con imagen
-            timestamp: "Just now",
-            likes: 0,
-            comments: 0,
-            image: selectedImageDataUrl, // Guardar la imagen en el post
-        };
-
-        // Datos del usuario actual (del atributo data del botón)
+        // Datos del usuario actual
         const currentUserData = openModalBtn?.getAttribute("data-user");
         const currentUser = currentUserData
             ? JSON.parse(currentUserData)
             : null;
 
-        if (currentUser) {
+        if (!currentUser) {
+            console.error("Current user not found");
+            setButtonLoading(false);
+            return;
+        }
+
+        try {
+            // Crear post usando storageService
+            const newPost = await createPost({
+                userId: currentUser.id,
+                content: content || "",
+                timestamp: "Just now",
+                likes: 0,
+                comments: 0,
+                image: selectedImageDataUrl,
+            });
+
             // Actualización optimista: mostrar el post inmediatamente
             const postHTML = createPostElement(newPost, currentUser);
             const postsContainer = document.querySelector(".posts-feed");
@@ -380,28 +422,21 @@ const { currentUser } = Astro.props;
             if (postsContainer) {
                 postsContainer.insertAdjacentHTML("afterbegin", postHTML);
                 attachLikeHandlers();
-                attachPostMenuHandlers();
             }
 
-            // Simular llamada al backend
-            const success = await simulateBackendPostCreation(newPost);
+            // Cerrar modal y resetear
+            closeModal();
 
-            if (success) {
-                // Backend confirmó éxito - el post ya está mostrado
-                console.log("Post created successfully");
-            } else {
-                // Si el backend falla, eliminar el post optimista
-                console.error("Failed to create post");
-                const optimisticPost = document.querySelector(
-                    `[data-post-id="${newPost.id}"]`,
-                );
-                optimisticPost?.closest("article")?.remove();
-            }
+            // Mostrar notificación de éxito (opcional)
+            console.log("Post created successfully:", newPost.id);
+        } catch (error) {
+            console.error("Failed to create post:", error);
+
+            // Mostrar mensaje de error al usuario
+            alert("Failed to create post. Please try again.");
+        } finally {
+            setButtonLoading(false);
         }
-
-        // Cerrar modal y resetear
-        closeModal();
-        postSubmitBtn.textContent = "Post";
     });
 
     // Función para crear HTML del post
@@ -460,9 +495,13 @@ const { currentUser } = Astro.props;
 					</div>
 				</div>
 
-				${post.content ? `<div class="px-4 pb-3">
+				${
+                    post.content
+                        ? `<div class="px-4 pb-3">
 					<p class="text-gray-900 text-sm leading-relaxed">${post.content}</p>
-				</div>` : ''}
+				</div>`
+                        : ""
+                }
 
 				${imageHTML}
 
@@ -497,75 +536,6 @@ const { currentUser } = Astro.props;
 				</div>
 			</article>
 		`;
-    }
-
-    // Re-aplicar event listeners para el botón de like (reutilizar lógica existente)
-    function attachLikeHandlers() {
-        document.querySelectorAll(".post-like-btn").forEach((btn) => {
-            // Remover listeners previos clonando el elemento
-            const newBtn = btn.cloneNode(true);
-            btn.parentNode?.replaceChild(newBtn, btn);
-
-            newBtn.addEventListener("click", function (this: HTMLElement) {
-                const icon = this.querySelector(".like-icon");
-                const text = this.querySelector(".like-text");
-                const currentLikes = parseInt(this.dataset.likes || "0");
-
-                const isLiked = this.classList.contains("text-blue-600");
-
-                if (isLiked) {
-                    // Unlike
-                    this.classList.remove("text-blue-600");
-                    this.classList.add("text-gray-600");
-                    icon?.setAttribute("fill", "none");
-                    if (text) text.textContent = "Like";
-                    this.dataset.likes = (currentLikes - 1).toString();
-                } else {
-                    // Like
-                    this.classList.remove("text-gray-600");
-                    this.classList.add("text-blue-600");
-                    icon?.setAttribute("fill", "currentColor");
-                    if (text) text.textContent = "Liked";
-                    this.dataset.likes = (currentLikes + 1).toString();
-                }
-            });
-        });
-    }
-
-    // Re-aplicar event listeners para el menú dropdown de posts
-    function attachPostMenuHandlers() {
-        const menuButtons = document.querySelectorAll(".post-menu-btn");
-        
-        menuButtons.forEach((button) => {
-            const btn = button as HTMLButtonElement;
-            const postId = btn.dataset.postId;
-            const dropdown = document.querySelector(
-                `.post-dropdown[data-post-id="${postId}"]`
-            ) as HTMLElement;
-
-            if (dropdown) {
-                // Remover listeners previos
-                const newBtn = btn.cloneNode(true) as HTMLButtonElement;
-                btn.parentNode?.replaceChild(newBtn, btn);
-
-                // Toggle dropdown al hacer click en el botón
-                newBtn.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    // Cerrar otros dropdowns abiertos
-                    document.querySelectorAll(".post-dropdown").forEach((d) => {
-                        if (d !== dropdown) d.classList.add("hidden");
-                    });
-                    dropdown.classList.toggle("hidden");
-                });
-
-                // Cerrar dropdown al hacer click fuera
-                document.addEventListener("click", (e) => {
-                    if (!dropdown.contains(e.target as Node) && e.target !== newBtn) {
-                        dropdown.classList.add("hidden");
-                    }
-                });
-            }
-        });
     }
 </script>
 

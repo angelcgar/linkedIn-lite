@@ -5,6 +5,7 @@ import ProfileSidebar from "../components/ProfileSidebar.astro";
 import RightSidebar from "../components/RightSidebar.astro";
 import Post from "../components/Post.astro";
 import CreatePostModal from "../components/CreatePostModal.astro";
+import SkeletonPost from "../components/SkeletonPost.astro";
 
 import {
 	getCurrentUser,
@@ -21,7 +22,8 @@ import {
 // Fetch data using API layer (simulated for now, ready for real backend)
 const currentUser = await getCurrentUser();
 const suggestions = await getUserSuggestions(3);
-const enrichedPosts = await getPosts();
+// Los posts se cargarán dinámicamente del lado del cliente
+const users = (await import("../lib/data.js")).users;
 
 // Handle case where current user is not found
 if (!currentUser) {
@@ -97,11 +99,13 @@ if (!currentUser) {
 
 				<!-- Posts Feed -->
 				<div class="posts-feed">
-					{
-						enrichedPosts.map((postWithAuthor) => (
-							<Post postWithAuthor={postWithAuthor} />
-						))
-					}
+					<!-- Skeleton loaders - se reemplazan cuando cargan los posts -->
+					<div id="posts-loading-container">
+						<SkeletonPost />
+						<SkeletonPost />
+						<SkeletonPost />
+					</div>
+					<div id="posts-container"></div>
 				</div>
 			</div>
 
@@ -117,6 +121,9 @@ if (!currentUser) {
 </Layout>
 
 <script>
+	import { loadAndRenderPosts } from "../lib/clientInit";
+	import { users } from "../lib/data";
+
 	// Abrir modal desde los botones Photo y Article también
 	const photoBtn = document.getElementById("open-create-post-modal-photo");
 	const articleBtn = document.getElementById(
@@ -131,4 +138,17 @@ if (!currentUser) {
 	articleBtn?.addEventListener("click", () => {
 		openModalBtn?.click();
 	});
+
+	// Cargar posts dinámicamente con skeleton loaders
+	const postsContainer = document.getElementById("posts-container");
+	const loadingContainer = document.getElementById("posts-loading-container");
+
+	if (postsContainer) {
+		loadAndRenderPosts(postsContainer, users).then(() => {
+			// Ocultar skeleton loaders cuando los posts están cargados
+			if (loadingContainer) {
+				loadingContainer.style.display = "none";
+			}
+		});
+	}
 </script>
