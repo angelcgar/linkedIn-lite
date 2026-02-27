@@ -36,10 +36,17 @@ export interface Post {
   userId: string;
   content: string;
   timestamp: string;
+  createdAt: number;
   likes: number;
   comments: number;
   image?: string | null;
-  sharedPostId?: string; // ID del post original si este es un share
+  sharedPostId?: string;
+  reactions: {
+    like: number;
+    clap: number;
+    interesting: number;
+  };
+  userReaction: "like" | "clap" | "interesting" | null;
 }
 
 export interface Comment {

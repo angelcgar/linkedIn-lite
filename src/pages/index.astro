@@ -97,6 +97,22 @@ if (!currentUser) {
 					</div>
 				</div>
 
+				<!-- Feed Sort Selector -->
+				<div class="bg-white rounded-lg border border-gray-200 p-4 mb-4">
+					<div class="flex items-center justify-between">
+						<label for="feed-sort-select" class="text-sm font-semibold text-gray-700">
+							Ordenar por:
+						</label>
+						<select
+							id="feed-sort-select"
+							class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition cursor-pointer"
+						>
+							<option value="recent">Más recientes</option>
+							<option value="popular">Más populares</option>
+						</select>
+					</div>
+				</div>
+
 				<!-- Posts Feed -->
 				<div class="posts-feed">
 					<!-- Skeleton loaders - se reemplazan cuando cargan los posts -->
@@ -121,8 +137,13 @@ if (!currentUser) {
 </Layout>
 
 <script>
-	import { loadAndRenderPosts } from "../lib/clientInit";
 	import { users } from "../lib/data";
+	import { posts as postsData } from "../lib/data";
+	import { initializePosts } from "../lib/feed/storageService.js";
+	import { renderFeed } from "../lib/feed/feed.js";
+
+	// Make users available globally for feed rendering
+	window.__USERS_DATA__ = users;
 
 	// Abrir modal desde los botones Photo y Article también
 	const photoBtn = document.getElementById("open-create-post-modal-photo");
@@ -139,16 +160,24 @@ if (!currentUser) {
 		openModalBtn?.click();
 	});
 
-	// Cargar posts dinámicamente con skeleton loaders
-	const postsContainer = document.getElementById("posts-container");
+	// Initialize posts and render feed
 	const loadingContainer = document.getElementById("posts-loading-container");
+	const sortSelect = document.getElementById("feed-sort-select");
 
-	if (postsContainer) {
-		loadAndRenderPosts(postsContainer, users).then(() => {
-			// Ocultar skeleton loaders cuando los posts están cargados
-			if (loadingContainer) {
-				loadingContainer.style.display = "none";
-			}
-		});
-	}
+	// Initialize localStorage with default posts
+	initializePosts(postsData);
+
+	// Initial render
+	setTimeout(() => {
+		renderFeed(users, 'recent');
+		if (loadingContainer) {
+			loadingContainer.style.display = "none";
+		}
+	}, 500);
+
+	// Handle sort change
+	sortSelect?.addEventListener("change", (e) => {
+		const sortBy = e.target.value;
+		renderFeed(users, sortBy);
+	});
 </script>

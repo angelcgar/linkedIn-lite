@@ -468,6 +468,10 @@ export const comments: Comment[] = [
  * Mock posts database
  * In production, this would be fetched from a real database/API
  */
+const now = Date.now();
+const HOUR = 60 * 60 * 1000;
+const DAY = 24 * HOUR;
+
 export const posts: Post[] = [
   {
     id: 'post-1',
@@ -475,9 +479,12 @@ export const posts: Post[] = [
     content:
       "Excited to share my latest project on minimalist interfaces. We focused on reducing cognitive load while maintaining functionality. What's your take on minimal UI? 🚀",
     timestamp: '2h',
+    createdAt: now - 2 * HOUR,
     likes: 124,
     comments: 4,
     image: 'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=600&h=400&fit=crop',
+    reactions: { like: 45, clap: 38, interesting: 41 },
+    userReaction: null,
   },
   {
     id: 'post-2',
@@ -485,9 +492,12 @@ export const posts: Post[] = [
     content:
       "Always proud of the team at TechFlow. We just hit a major milestone in our backend scalability project! Grateful for everyone's hard work.",
     timestamp: '5h',
+    createdAt: now - 5 * HOUR,
     likes: 89,
     comments: 2,
     image: null,
+    reactions: { like: 32, clap: 41, interesting: 16 },
+    userReaction: null,
   },
   {
     id: 'post-3',
@@ -495,9 +505,12 @@ export const posts: Post[] = [
     content:
       'Just published a new article about React Server Components and their impact on modern web architecture. Link in comments! 📝',
     timestamp: '1d',
+    createdAt: now - 1 * DAY,
     likes: 267,
     comments: 4,
     image: null,
+    reactions: { like: 89, clap: 67, interesting: 111 },
+    userReaction: null,
   },
   {
     id: 'post-4',
@@ -505,9 +518,12 @@ export const posts: Post[] = [
     content:
       "Hiring! We're looking for a Senior Product Designer to join our team. Remote-friendly, competitive salary, and amazing benefits. DM me if interested! 💼",
     timestamp: '2d',
+    createdAt: now - 2 * DAY,
     likes: 421,
     comments: 3,
     image: null,
+    reactions: { like: 156, clap: 98, interesting: 167 },
+    userReaction: null,
   },
   {
     id: 'post-5',
@@ -515,9 +531,12 @@ export const posts: Post[] = [
     content:
       'After 10 years in software architecture, I can confidently say that simplicity beats complexity every single time. Build systems that humans can understand and maintain.',
     timestamp: '3h',
+    createdAt: now - 3 * HOUR,
     likes: 312,
     comments: 3,
     image: null,
+    reactions: { like: 123, clap: 89, interesting: 100 },
+    userReaction: null,
   },
   {
     id: 'post-6',
@@ -525,9 +544,12 @@ export const posts: Post[] = [
     content:
       'Data science tip: Clean data is more valuable than complex algorithms. Spent the last month refining our data pipeline and the results speak for themselves. 📊',
     timestamp: '6h',
+    createdAt: now - 6 * HOUR,
     likes: 189,
     comments: 23,
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
+    reactions: { like: 67, clap: 54, interesting: 68 },
+    userReaction: null,
   },
   {
     id: 'post-7',
@@ -535,9 +557,12 @@ export const posts: Post[] = [
     content:
       'Excited to announce that I just open-sourced my side project! A lightweight TypeScript library for building accessible components. Check it out on GitHub! 🎉',
     timestamp: '8h',
+    createdAt: now - 8 * HOUR,
     likes: 456,
     comments: 4,
     image: null,
+    reactions: { like: 178, clap: 156, interesting: 122 },
+    userReaction: null,
   },
   {
     id: 'post-8',
@@ -545,9 +570,12 @@ export const posts: Post[] = [
     content:
       'Design systems are not just component libraries. They are the language that connects product, design, and engineering. Here is how we approach it at Notion...',
     timestamp: '12h',
+    createdAt: now - 12 * HOUR,
     likes: 534,
     comments: 3,
     image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=400&fit=crop',
+    reactions: { like: 201, clap: 167, interesting: 166 },
+    userReaction: null,
   },
   {
     id: 'post-9',
@@ -555,9 +583,12 @@ export const posts: Post[] = [
     content:
       'Kubernetes in production: lessons learned after managing 200+ microservices. Thread incoming 🧵',
     timestamp: '1d',
+    createdAt: now - 1 * DAY,
     likes: 721,
     comments: 134,
     image: null,
+    reactions: { like: 267, clap: 198, interesting: 256 },
+    userReaction: null,
   },
   {
     id: 'post-10',
@@ -565,9 +596,12 @@ export const posts: Post[] = [
     content:
       'User research is not about validating your ideas. It is about discovering what you do not know. Stop asking users what they want and start observing what they actually do.',
     timestamp: '1d',
+    createdAt: now - 1 * DAY,
     likes: 298,
     comments: 41,
     image: null,
+    reactions: { like: 112, clap: 78, interesting: 108 },
+    userReaction: null,
   },
   {
     id: 'post-11',
@@ -575,9 +609,12 @@ export const posts: Post[] = [
     content:
       'Flutter vs React Native in 2024? I have built production apps with both. Here is my honest comparison and when to choose each...',
     timestamp: '2d',
+    createdAt: now - 2 * DAY,
     likes: 892,
     comments: 3,
     image: null,
+    reactions: { like: 334, clap: 267, interesting: 291 },
+    userReaction: null,
   },
   {
     id: 'post-12',
@@ -585,9 +622,12 @@ export const posts: Post[] = [
     content:
       'Leading a team of 15 engineers taught me that technical skills are just the baseline. Communication, empathy, and clear vision matter more than you think.',
     timestamp: '2d',
+    createdAt: now - 2 * DAY,
     likes: 623,
     comments: 78,
     image: null,
+    reactions: { like: 234, clap: 189, interesting: 200 },
+    userReaction: null,
   },
   {
     id: 'post-13',
@@ -595,9 +635,12 @@ export const posts: Post[] = [
     content:
       'Just wrapped up a challenging sprint at Webflow. Shipped a major performance optimization that reduced load times by 40%. Proud of the team! 🚀',
     timestamp: '3d',
+    createdAt: now - 3 * DAY,
     likes: 167,
     comments: 19,
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
+    reactions: { like: 67, clap: 56, interesting: 44 },
+    userReaction: null,
   },
   {
     id: 'post-14',
@@ -605,9 +648,12 @@ export const posts: Post[] = [
     content:
       'Machine learning does not solve business problems. Understanding your data and asking the right questions does. ML is just a tool in the toolbox.',
     timestamp: '3d',
+    createdAt: now - 3 * DAY,
     likes: 445,
     comments: 52,
     image: null,
+    reactions: { like: 167, clap: 123, interesting: 155 },
+    userReaction: null,
   },
   {
     id: 'post-15',
@@ -615,9 +661,12 @@ export const posts: Post[] = [
     content:
       'Hot take: Your design portfolio should show your process, not just pretty pictures. Employers want to see how you think and solve problems.',
     timestamp: '4d',
+    createdAt: now - 4 * DAY,
     likes: 756,
     comments: 91,
     image: null,
+    reactions: { like: 289, clap: 234, interesting: 233 },
+    userReaction: null,
   },
   {
     id: 'post-16',
@@ -625,10 +674,13 @@ export const posts: Post[] = [
     content:
       'Completely agree with this! Simplicity is the ultimate sophistication. 💯',
     timestamp: '2h',
+    createdAt: now - 2 * HOUR,
     likes: 45,
     comments: 3,
     image: null,
-    sharedPostId: 'post-5', // Compartiendo el post de user-8 sobre simplicidad
+    sharedPostId: 'post-5',
+    reactions: { like: 18, clap: 15, interesting: 12 },
+    userReaction: null,
   },
   {
     id: 'post-17',
@@ -636,9 +688,12 @@ export const posts: Post[] = [
     content:
       'This is exactly what we need in the industry right now. Great insights! 🙌',
     timestamp: '4h',
+    createdAt: now - 4 * HOUR,
     likes: 67,
     comments: 5,
     image: null,
-    sharedPostId: 'post-3', // Compartiendo el post de user-5 sobre React Server Components
+    sharedPostId: 'post-3',
+    reactions: { like: 28, clap: 21, interesting: 18 },
+    userReaction: null,
   },
 ];

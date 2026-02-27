@@ -45,3 +45,42 @@ body {
   color: var(--color-text-primary);
   background-color: var(--color-bg-secondary);
 }
+
+/* Reaction Animation */
+@keyframes reaction-bounce {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.reaction-animate {
+  animation: reaction-bounce 200ms ease-in-out;
+}
+
+/* Feed Transition */
+#posts-container {
+  transition: opacity 300ms ease-in-out;
+}
+
+.post-item {
+  transition: all 300ms ease-in-out;
+}
+
+/* Reaction Button Hover Effects */
+.reaction-btn {
+  transition: all 150ms ease-in-out;
+}
+
+.reaction-btn:hover {
+  transform: translateY(-1px);
+}
+
+.reaction-btn:active {
+  transform: translateY(0);
+}
